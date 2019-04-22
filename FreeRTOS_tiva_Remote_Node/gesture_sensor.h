@@ -23,13 +23,6 @@
 #define GESTURE_SENSITIVITY_1   50
 #define GESTURE_SENSITIVITY_2   20
 
-//#define GESTURE_EN (0x1<<6)
-//#define PROX_INT_EN (0x1<<5)
-//#define ALS_INT_EN (0x1<<4)
-//#define WAIT_EN (0x1<<3)
-//#define PROX_EN (0x1<<2)
-//#define ALS_EN (0x1<<1)
-//#define POWER_EN (0x1)
 
 /* Error code for returned values */
 #define ERROR                   0xFF
