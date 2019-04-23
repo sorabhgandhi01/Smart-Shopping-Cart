@@ -1,27 +1,23 @@
-/* FreeRTOS 8.2 Tiva Demo
- *
- * main.c
- *
- * Om Raheja
- *
- * This is a simple demonstration project of FreeRTOS 8.2 on the Tiva Launchpad
- * EK-TM4C1294XL.  TivaWare driverlib sourcecode is included.
- */
+/*@FileName : main.c
+ *@Author   : Om Raheja
+ *@Course   : Advanced Embedded Software Development [Spring 2019]
+ *          : Project 2 [Smart Shopping Cart]
+ * */
 
+/* Header Files */
 #include <stdint.h>
 #include <stdbool.h>
 #include "main.h"
 #include "drivers/pinout.h"
 #include "utils/uartstdio.h"
 
-
-// TivaWare includes
+/* TivaWare includes */
 #include "driverlib/sysctl.h"
 #include "driverlib/debug.h"
 #include "driverlib/rom.h"
 #include "driverlib/rom_map.h"
 
-// FreeRTOS includes
+/* FreeRTOS includes */
 #include "FreeRTOSConfig.h"
 #include "FreeRTOS.h"
 #include "task.h"
@@ -31,12 +27,12 @@
 #include "gesture_sensor.h"
 #include "push_button_task.h"
 #include "ultrasonic_sensor.h"
-
+#include "motor_driver.h"
 
 /* Global variables */
 uint32_t output_clock_rate_hz;
-
 TaskHandle_t Gesture_Task;
+TaskHandle_t xAlert = NULL;
 
 // Main function
 int main(void)
@@ -49,23 +45,30 @@ int main(void)
     // Initialize the GPIO pins for the Launchpad
     PinoutSet(false, false);
 
-
     /* Initialize I2C */
-        I2C_Init();
+    I2C_Init();
 
     // Set up the UART which is connected to the virtual COM port
     UARTStdioConfig(0, 115200, SYSTEM_CLOCK);
 
+    /* Create Alert Task */
+    xTaskCreate(alert_task, (const portCHAR *)"ALERT TASK",
+                configMINIMAL_STACK_SIZE, NULL, 1, &xAlert);
 
-//    // Create Push Button Task
-//    xTaskCreate(vPush_Button_Task, (const portCHAR *)"Push Button",
-//                    configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+    /* Create Push Button Task */
+    xTaskCreate(vPush_Button_Task, (const portCHAR *)"Push Button",
+                configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 
-    // Create Ultrasonic Distance Sensor Task
-    xTaskCreate(vUltraSonic_Task, (const portCHAR *)"Distance",
-                        configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+    /* Create Motor Driver Task */
+    xTaskCreate(vMotor_Driver_Task, (const portCHAR *)"Motor Driver Task",
+                configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 
-//    // Create Gesture Sensor Task
+
+//    /* Create Ultrasonic Distance Sensor Task */
+//    xTaskCreate(vUltraSonic_Task, (const portCHAR *)"Distance",
+//                configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+//
+//    /* Create Gesture Sensor Task */
 //    xTaskCreate(vGesture_Sensor_Task, (const portCHAR *)"Gesture",
 //                configMINIMAL_STACK_SIZE, NULL, 1, &Gesture_Task);
 
