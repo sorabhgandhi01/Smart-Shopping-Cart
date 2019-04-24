@@ -11,8 +11,8 @@
 #include <pthread.h>
 #include <sys/syscall.h>
 
-
 #include "uart.h"
+#include "comm_interface.h"
 
 #define NUM_THREAD 3
 
@@ -68,17 +68,19 @@ void *uart_tx_thread(void *arg)
 	{
 		status = uart_write(&w_data, 1);
 
-		usleep(200000);
+		usleep(100000);
 	}
 
 	pthread_cancel(thread[0]);
+
 }
 
 void *uart_rx_thread(void *arg)
 {
 	int fd;
         int status = 1;
-	char r_data;
+	//char r_data;
+	TIVA_MSG r_data;
 
         fd = uart_rx_open("/dev/ttyO1", 115200);
         if (fd != 0) {
@@ -88,10 +90,11 @@ void *uart_rx_thread(void *arg)
 
         while (1)
         {
-                status = uart_read(&r_data, 1);
+		r_data.msg_type = 0;
+                status = uart_read(&r_data, sizeof(r_data));
 
                 if (status > 0) {
-			printf("Read data = %x\n", r_data);
+			printf("MSG_TYPE = %x Sensor_data = %x\n", r_data.msg_type, r_data.data.pb_data);
 		}
         }
 

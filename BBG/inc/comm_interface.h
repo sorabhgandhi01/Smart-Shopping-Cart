@@ -1,0 +1,101 @@
+#ifndef _COMM_INTERFACE_H_
+#define _COMM_INTERFACE_H_
+
+#include <stdint.h>
+
+#define NUM_LOG_LEVELS 5
+#define NUM_MSG_TYPE 12
+
+typedef enum MSG_TYPE_T
+{
+	HEART_BEAT = 0,
+	SENSOR_START_UP_TEST_PASSED,
+	SENSOR_START_UP_TEST_FAILED,
+	TASK_START_UP_TEST_PASSED,
+	TASK_START_UP_TEST_FAILED,
+	GESTURE_SENSOR_INACTIVE,
+	DISTANCE_SENSOR_INACTIVE,
+	RFID_SENSOR_INACTIVE,
+	PUSH_BUTTON_SENSOR_DATA,
+	DISTANCE_SENSOR_DATA,
+	GESTURE_SENSOR_DATA,
+	RFID_SENSOR_DATA,
+}MSG_TYPE;
+
+typedef enum PB_DATA_T
+{
+	NO_PB_UPDATE = -1,
+	PB1_PRESSED,
+	PB1_RELEASED,
+	PB2_PRESSED,
+	PB2_RELEASED,
+	PB3_PRESSED,
+	PB3_RELEASED,
+	PB4_PRESSED,
+	PB4_RELEASED,
+}PB_DATA;
+	
+typedef enum GS_DATA_T
+{
+	GS_ERROR = -1,
+	GS_FORWARD,
+	GS_BACKWARD,
+	GS_RIGHT,
+	GS_LEFT,
+	GS_NO_GESTURE,
+}GS_DATA;
+
+typedef enum LOG_LEVELS_T
+{
+	ERROR = 0,
+	WARNING,
+	DEBUG,
+	INFO,
+	ALERT,
+}LOG_LEVELS;
+	
+typedef struct TIVA_MSG_T
+{
+	uint8_t msg_type;
+	union TIVA_DATA
+	{
+		uint8_t gesture_data;
+		uint8_t pb_data;
+		float distance;
+		uint8_t no_data;
+	}data;
+}TIVA_MSG;
+
+const static char *const LOG_LEVEL_STRING[NUM_LOG_LEVELS] =
+{
+	"Error",
+	"WARNING",
+	"DEBUG",
+	"INFO",
+	"ALERT",
+};
+
+const static char *const MSG_TYPE_STRING[NUM_MSG_TYPE] =
+{
+	"HEART-BEAT DATA",
+	"SENSOR BIST PASSED",
+	"SENSOR BIST FAILED",
+	"TASK CREATION BIST PASSED",
+	"TASK CREATION BIST FAILED",
+	"GESTURE SENSOR INACTIVE",
+	"DISTANCE SENSOR INACTIVE",
+	"RFID SENSOR INACTIVE",
+	"PUSH BUTTON SENSOR DATA",
+	"DISTANCE SENSOR DATA",
+	"GESTURE SENSOR DATA",
+	"RFID SENSOR DATA",
+};
+
+typedef struct SENSOR_DATA_T
+{
+	uint8_t msg_type;
+	uint8_t log_level;
+	float sensor_data;
+}SENSOR_DATA;
+
+#endif
