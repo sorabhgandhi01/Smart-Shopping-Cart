@@ -1,19 +1,14 @@
-/*
- * gesture_sensor.h
- *
- *  Created on: Apr 18, 2019
- *      Author: omrah
- */
 
 #ifndef GESTURE_SENSOR_H_
 #define GESTURE_SENSOR_H_
-
-/* Header Files */
+///* Header Files */
 #include <stdbool.h>
 #include "utils/uartstdio.h"
+#include "driverlib/gpio.h"
+#include "driverlib/inc/hw_memmap.h"
+#include "sysctl.h"
 #include "I2C.h"
-#include "FreeRTOS.h"
-#include "task.h"
+
 
 /* APDS-9960 I2C Address */
 #define APDS9960_I2C_ADDRESS  0x39
@@ -671,5 +666,6 @@ int I2C_ReadDataBlock (uint8_t reg, uint8_t *val, unsigned int len);
  * FUNCTION NAME    : READ GESTURE                               *
  *****************************************************************/
 int readGesture();
+
 
 #endif /* GESTURE_SENSOR_H_ */

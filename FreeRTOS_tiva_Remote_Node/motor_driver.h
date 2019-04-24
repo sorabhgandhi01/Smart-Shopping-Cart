@@ -1,20 +1,24 @@
-/*
- * motor_driver.h
- *
- *  Created on: Apr 22, 2019
- *      Author: omrah
+/*@Filename : motor_driver.h
+ * @Author  : Om Raheja & Sorabh Gandhi
+ * @Course  : [PROJECT 2]Advanced Embedded Software Development Spring 2019
+ * @Date    : 19th April 2019
+ * @brief   :
  */
 
 #ifndef MOTOR_DRIVER_H_
 #define MOTOR_DRIVER_H_
 
-#include "push_button_task.h"
-#include "FreeRTOS.h"
-#include "queue.h"
+#include <stdbool.h>
 #include "utils/uartstdio.h"
-#include "task.h"
+#include "driverlib/gpio.h"
+#include "driverlib/inc/hw_memmap.h"
 
 
-void vMotor_Driver_Task(void *pvParameters);
-void alert_task(void *pvParameters);
+
+void FORWARD();
+void BACKWARD();
+void RIGHT();
+void LEFT();
+void STOP();
+
 #endif /* MOTOR_DRIVER_H_ */
