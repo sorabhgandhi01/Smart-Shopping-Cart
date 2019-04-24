@@ -151,7 +151,7 @@ ssize_t uart_write(char *buf, size_t count) {
 		       __func__, errno, count);
 		return -errno;
 	} else {
-		printf("Wriiten data = %c of length %x\n", *buf, count);
+		//printf("Wriiten data = %c of length %x\n", *buf, count);
 	}
 	
 	return bytes_written;
