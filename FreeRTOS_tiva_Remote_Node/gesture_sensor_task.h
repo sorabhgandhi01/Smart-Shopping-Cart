@@ -9,6 +9,7 @@
 #define GESTURE_SENSOR_TASK_H_
 
 /* Header Files */
+#include <motor_control.h>
 #include <stdbool.h>
 #include <string.h>
 #include "utils/uartstdio.h"
@@ -16,7 +17,6 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "portmacro.h"
-#include "motor_driver.h"
 #include "gesture_sensor.h"
 #include "semphr.h"
 #include "helper.h"

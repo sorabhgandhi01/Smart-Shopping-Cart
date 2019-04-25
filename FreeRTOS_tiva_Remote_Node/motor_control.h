@@ -5,8 +5,8 @@
  * @brief   :
  */
 
-#ifndef MOTOR_DRIVER_H_
-#define MOTOR_DRIVER_H_
+#ifndef MOTOR_CONTROL_H_
+#define MOTOR_CONTROL_H_
 
 #include <stdbool.h>
 #include "utils/uartstdio.h"
@@ -21,4 +21,4 @@ void RIGHT();
 void LEFT();
 void STOP();
 
-#endif /* MOTOR_DRIVER_H_ */
+#endif /* MOTOR_CONTROL_H_ */

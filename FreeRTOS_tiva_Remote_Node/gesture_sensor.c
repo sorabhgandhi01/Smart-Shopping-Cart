@@ -5,9 +5,9 @@ bool SparkFun_APDS9960_Init()
 {
     uint8_t id;
 
-    UARTprintf("About to Initialize I2C\n\r");
+//    UARTprintf("About to Initialize I2C\n\r");
 
-    UARTprintf("I2C INITIALIZED\n\r");
+//    UARTprintf("I2C INITIALIZED\n\r");
 
     /* Read ID register and check against known values for APDS-9960 */
     if(!I2C_ReadDataByte(APDS9960_ID,&id))
@@ -15,14 +15,14 @@ bool SparkFun_APDS9960_Init()
         UARTprintf("ID REGISTER READ FAILED\n\r");
         return false;
     }
-    UARTprintf("ID REGISTER READ PASSED\n\r");
+//    UARTprintf("ID REGISTER READ PASSED\n\r");
 
     if(!(id == APDS9960_ID_1 || id == APDS9960_ID_2))
     {
         UARTprintf("ID!= APDS9960_ID_1 or ID!= APDS9960_ID_2\n\r");
         return false;
     }
-    UARTprintf("ID= APDS9960_ID_1 or ID= APDS9960_ID_2\n\r");
+//    UARTprintf("ID= APDS9960_ID_1 or ID= APDS9960_ID_2\n\r");
 
 
     /* Set ENABLE register to 0 (Disable all the features) */
@@ -31,107 +31,107 @@ bool SparkFun_APDS9960_Init()
         UARTprintf("ALL FEATURES COULD NOT BE DISABLED!\n\r");
         return false;
     }
-    UARTprintf("ALL FEATURES DISABLED!\n\r");
+//    UARTprintf("ALL FEATURES DISABLED!\n\r");
 
 
     /* Set default values for ambient light and proximity registers */
     if( !I2C_WriteDataByte(APDS9960_ATIME, DEFAULT_ATIME))
     {
-        UARTprintf("DEFAULT SETTING FOR AMBIENT LIGHT AND PROXIMITY SENSOR FAILED\n\r");
+       UARTprintf("DEFAULT SETTING FOR AMBIENT LIGHT AND PROXIMITY SENSOR FAILED\n\r");
         return false;
     }
-    UARTprintf("DEFAULT SETTING FOR AMBIENT LIGHT AND PROXIMITY SENSOR PASSED\n\r");
+//    UARTprintf("DEFAULT SETTING FOR AMBIENT LIGHT AND PROXIMITY SENSOR PASSED\n\r");
 
     if( !I2C_WriteDataByte(APDS9960_WTIME, DEFAULT_WTIME))
     {
         UARTprintf("DATA BYTE WRITE FAILED\n\r");
         return false;
     }
-    UARTprintf("DATA BYTE WRITE - 1 PASSED\n\r");
+//    UARTprintf("DATA BYTE WRITE - 1 PASSED\n\r");
 
     if( !I2C_WriteDataByte(APDS9960_PPULSE, DEFAULT_PROX_PPULSE))
     {
         UARTprintf("DATA BYTE WRITE FAILED\n\r");
         return false;
     }
-    UARTprintf("DATA BYTE WRITE - 2 PASSED\n\r");
+//    UARTprintf("DATA BYTE WRITE - 2 PASSED\n\r");
 
     if( !I2C_WriteDataByte(APDS9960_POFFSET_UR, DEFAULT_POFFSET_UR))
     {
         UARTprintf("DATA BYTE WRITE FAILED\n\r");
         return false;
     }
-    UARTprintf("DATA BYTE WRITE - 3 PASSED\n\r");
+//    UARTprintf("DATA BYTE WRITE - 3 PASSED\n\r");
 
     if( !I2C_WriteDataByte(APDS9960_POFFSET_DL, DEFAULT_POFFSET_DL))
     {
         UARTprintf("DATA BYTE WRITE FAILED\n\r");
         return false;
     }
-    UARTprintf("DATA BYTE WRITE - 4 PASSED\n\r");
+//    UARTprintf("DATA BYTE WRITE - 4 PASSED\n\r");
 
     if( !I2C_WriteDataByte(APDS9960_CONFIG1, DEFAULT_CONFIG1))
     {
         UARTprintf("DATA BYTE WRITE FAILED\n\r");
         return false;
     }
-    UARTprintf("DATA BYTE WRITE - 5 PASSED\n\r");
+//    UARTprintf("DATA BYTE WRITE - 5 PASSED\n\r");
 
     if( !setLEDDrive(DEFAULT_LDRIVE))
     {
         UARTprintf("SET LED DRIVE FAILED\n\r");
         return false;
     }
-    UARTprintf("SET LED DRIVE PASSED\n\r");
+//    UARTprintf("SET LED DRIVE PASSED\n\r");
 
     if( !setProximityGain(DEFAULT_PGAIN))
     {
         UARTprintf("SET PROXIMITY GAIN FAILED\n\r");
         return false;
     }
-    UARTprintf("SET PROXIMITY GAIN PASSED\n\r");
+//    UARTprintf("SET PROXIMITY GAIN PASSED\n\r");
 
     if( !setAmbientLightGain(DEFAULT_AGAIN))
     {
         UARTprintf("SET AMBIENT LIGHT GAIN FAILED\n\r");
         return false;
     }
-    UARTprintf("SET AMBIENT LIGHT GAIN PASSED\n\r");
+//    UARTprintf("SET AMBIENT LIGHT GAIN PASSED\n\r");
 
     if( !setProxIntLowThresh(DEFAULT_PILT))
     {
         UARTprintf("SET PROX INT LOW THRESH FAILED\n\r");
         return false;
     }
-    UARTprintf("SET PROX INT LOW THRESH PASSED\n\r");
+//    UARTprintf("SET PROX INT LOW THRESH PASSED\n\r");
 
     if( !setProxIntHighThresh(DEFAULT_PIHT))
     {
         UARTprintf("SET PROX INT HIGH THRESH FAILED\n\r");
         return false;
     }
-    UARTprintf("SET PROX INT HIGH THRESH PASSED\n\r");
+//    UARTprintf("SET PROX INT HIGH THRESH PASSED\n\r");
 
     if( !I2C_WriteDataByte(APDS9960_PERS, DEFAULT_PERS))
     {
         UARTprintf("WRITE DATA BYTE FAILED\n\r");
         return false;
     }
-    UARTprintf("WRITE DATA BYTE - 6 PASSED\n\r");
+//    UARTprintf("WRITE DATA BYTE - 6 PASSED\n\r");
 
     if( !I2C_WriteDataByte(APDS9960_CONFIG2, DEFAULT_CONFIG2))
     {
         UARTprintf("WRITE DATA BYTE FAILED\n\r");
         return false;
     }
-    UARTprintf("WRITE DATA BYTE - 7 PASSED\n\r");
+//    UARTprintf("WRITE DATA BYTE - 7 PASSED\n\r");
 
     if( !I2C_WriteDataByte(APDS9960_CONFIG3, DEFAULT_CONFIG3))
     {
         UARTprintf("WRITE DATA BYTE FAILED\n\r");
         return false;
     }
-    UARTprintf("WRITE DATA BYTE - 8 PASSED\n\r");
+//    UARTprintf("WRITE DATA BYTE - 8 PASSED\n\r");
 
 
     /* Set default values for gesture sense registers */
@@ -140,86 +140,86 @@ bool SparkFun_APDS9960_Init()
         UARTprintf("SET GESTURE ENTER THRESH FAILED\n\r");
         return false;
     }
-    UARTprintf("SET GESTURE ENTER THRESH PASSED\n\r");
+//    UARTprintf("SET GESTURE ENTER THRESH PASSED\n\r");
 
     if( !setGestureExitThresh(DEFAULT_GEXTH))
     {
         UARTprintf("SET GESTURE EXIT THRESH FAILED\n\r");
         return false;
     }
-    UARTprintf("SET GESTURE EXIT THRESH PASSED\n\r");
+//    UARTprintf("SET GESTURE EXIT THRESH PASSED\n\r");
 
     if( !I2C_WriteDataByte(APDS9960_GCONF1, DEFAULT_GCONF1))
     {
         UARTprintf("WRITE DATA BYTE FAILED\n\r");
         return false;
     }
-    UARTprintf("WRITE DATA BYTE - 9 PASSED\n\r");
+//    UARTprintf("WRITE DATA BYTE - 9 PASSED\n\r");
 
     if( !setGestureGain(DEFAULT_GGAIN))
     {
         UARTprintf("SET GESTURE GAIN FAILED\n\r");
         return false;
     }
-    UARTprintf("SET GESTURE GAIN PASSED\n\r");
+//    UARTprintf("SET GESTURE GAIN PASSED\n\r");
 
     if( !setGestureLEDDrive(DEFAULT_GLDRIVE))
     {
         UARTprintf("SET GESTURE LED DRIVE FAILED\n\r");
         return false;
     }
-    UARTprintf("SET GESTURE LED DRIVE PASSED\n\r");
+//    UARTprintf("SET GESTURE LED DRIVE PASSED\n\r");
 
     if( !setGestureWaitTime(DEFAULT_GWTIME))
     {
         UARTprintf("SET GESTURE WAIT TIME FAILED\n\r");
         return false;
     }
-    UARTprintf("SET GESTURE WAIT TIME PASSED\n\r");
+//    UARTprintf("SET GESTURE WAIT TIME PASSED\n\r");
 
     if( !I2C_WriteDataByte(APDS9960_GOFFSET_U, DEFAULT_GOFFSET))
     {
         UARTprintf("WRITE DATA BYTE FAILED\n\r");
         return false;
     }
-    UARTprintf("WRITE DATA BYTE - 10 PASSED\n\r");
+//    UARTprintf("WRITE DATA BYTE - 10 PASSED\n\r");
 
     if( !I2C_WriteDataByte(APDS9960_GOFFSET_D, DEFAULT_GOFFSET))
     {
         return false;
     }
-    UARTprintf("WRITE DATA BYTE - 11 PASSED\n\r");
+//    UARTprintf("WRITE DATA BYTE - 11 PASSED\n\r");
 
     if( !I2C_WriteDataByte(APDS9960_GOFFSET_L, DEFAULT_GOFFSET))
     {
         return false;
     }
-    UARTprintf("WRITE DATA BYTE - 12 PASSED\n\r");
+//    UARTprintf("WRITE DATA BYTE - 12 PASSED\n\r");
 
     if( !I2C_WriteDataByte(APDS9960_GOFFSET_R, DEFAULT_GOFFSET))
     {
         return false;
     }
-    UARTprintf("WRITE DATA BYTE - 13 PASSED\n\r");
+//    UARTprintf("WRITE DATA BYTE - 13 PASSED\n\r");
 
     if( !I2C_WriteDataByte(APDS9960_GPULSE, DEFAULT_GPULSE))
     {
         return false;
     }
-    UARTprintf("WRITE DATA BYTE - 14 PASSED\n\r");
+//    UARTprintf("WRITE DATA BYTE - 14 PASSED\n\r");
 
     if( !I2C_WriteDataByte(APDS9960_GCONF3, DEFAULT_GCONF3))
     {
         return false;
     }
-    UARTprintf("WRITE DATA BYTE - 15 PASSED\n\r");
+//    UARTprintf("WRITE DATA BYTE - 15 PASSED\n\r");
 
     if( !setGestureIntEnable(DEFAULT_GIEN))
     {
         UARTprintf("SET GESTURE INT ENABLE FAILED\n\r");
         return false;
     }
-    UARTprintf("SET GESTURE INT ENABLE PASSED\n\r");
+//    UARTprintf("SET GESTURE INT ENABLE PASSED\n\r");
 
     return true;
 }
@@ -725,6 +725,7 @@ bool isGestureAvailable()
     /* Read value from GSTATUS register */
     if( !I2C_ReadDataByte(APDS9960_GSTATUS, &val))
     {
+        UARTprintf("GESTURE SENSOR NOT AVAILABLE!\n\r");
         return ERROR;
     }
 

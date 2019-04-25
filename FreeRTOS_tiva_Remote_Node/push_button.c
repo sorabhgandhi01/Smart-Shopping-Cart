@@ -11,6 +11,7 @@
  ****************************************************************************/
 #include "push_button.h"
 
+#define DEGRADED_MODE 1
 
 /****************************************************************************
  * GLOBAL VARIABLES                                                         *
@@ -80,7 +81,15 @@ void forward_button_pressed()
     // PJ0 was interrupt cause
     //UARTprintf("PJ0 Button Down\n");
     button_status = FORWARD_BUTTON_PRESSED;
-    xTaskNotifyGive(xAlert);
+
+    if(DEGRADED_MODE)
+    {
+        xTaskNotifyGive(xAlert);
+    }
+    else
+    {
+        //send information to sender task
+    }
     GPIOIntRegister(GPIO_PORTJ_BASE, onButtonUp);           // Register our handler function for port J
     GPIOIntTypeSet(GPIO_PORTJ_BASE, GPIO_PIN_0,
                    GPIO_RISING_EDGE);                       // Configure PJ0 for rising edge trigger
@@ -95,7 +104,17 @@ void backward_button_pressed()
     // PJ1 was interrupt cause
     //UARTprintf("PJ1 Button Down\n");
     button_status = BACKWARD_BUTTON_PRESSED;
-    xTaskNotifyGive(xAlert);
+
+    if(DEGRADED_MODE)
+    {
+        xTaskNotifyGive(xAlert);
+    }
+    else
+    {
+        //send information to sender task
+    }
+
+
     GPIOIntRegister(GPIO_PORTJ_BASE, onButtonUp);       // Register our handler function for port J
     GPIOIntTypeSet(GPIO_PORTJ_BASE, GPIO_PIN_1,
                    GPIO_RISING_EDGE);                   // Configure PJ1 for rising edge trigger
@@ -110,7 +129,16 @@ void right_button_pressed()
     // PL0 was interrupt cause
     //UARTprintf("PL0 Button Down\n");
     button_status = RIGHT_BUTTON_PRESSED;
-    xTaskNotifyGive(xAlert);
+
+    if(DEGRADED_MODE)
+    {
+        xTaskNotifyGive(xAlert);
+    }
+    else
+    {
+        //send information to sender task
+    }
+
     GPIOIntRegister(GPIO_PORTL_BASE, onButtonUp);       // Register our handler function for port A
     GPIOIntTypeSet(GPIO_PORTL_BASE, GPIO_PIN_0,
                    GPIO_RISING_EDGE);                   // Configure PL0 for rising edge trigger
@@ -126,7 +154,17 @@ void left_button_pressed()
     // PL1 was interrupt cause
     //UARTprintf("PL1 Button Down\n");
     button_status = LEFT_BUTTON_PRESSED;
-    xTaskNotifyGive(xAlert);
+
+    if(DEGRADED_MODE)
+    {
+        xTaskNotifyGive(xAlert);
+    }
+    else
+    {
+        //send information to sender task
+    }
+
+
     GPIOIntRegister(GPIO_PORTL_BASE, onButtonUp);           // Register our handler function for port A
     GPIOIntTypeSet(GPIO_PORTL_BASE, GPIO_PIN_1,
                    GPIO_RISING_EDGE);                       // Configure PL1 for rising edge trigger
@@ -142,7 +180,16 @@ void forward_button_released()
     // PJ0 was interrupt cause
     //UARTprintf("PJ0 Button Up\n");
     button_status = FORWARD_BUTTON_RELEASED;
-    xTaskNotifyGive(xAlert);
+
+    if(DEGRADED_MODE)
+    {
+        xTaskNotifyGive(xAlert);
+    }
+    else
+    {
+        //send information to sender task
+    }
+
     GPIOIntRegister(GPIO_PORTJ_BASE, onButtonDown);         // Register our handler function for port J
     GPIOIntTypeSet(GPIO_PORTJ_BASE, GPIO_PIN_0,
                    GPIO_FALLING_EDGE);                      // Configure PJ0 for falling edge trigger
@@ -157,7 +204,16 @@ void backward_button_released()
     // PJ1 was interrupt cause
     //UARTprintf("PJ1 Button Up\n");
     button_status = BACKWARD_BUTTON_RELEASED;
-    xTaskNotifyGive(xAlert);
+
+    if(DEGRADED_MODE)
+    {
+        xTaskNotifyGive(xAlert);
+    }
+    else
+    {
+        //send information to sender task
+    }
+
     GPIOIntRegister(GPIO_PORTJ_BASE, onButtonDown);         // Register our handler function for port J
     GPIOIntTypeSet(GPIO_PORTJ_BASE, GPIO_PIN_1,
                    GPIO_FALLING_EDGE);                      // Configure PJ1 for falling edge trigger
@@ -172,7 +228,16 @@ void right_button_released()
     // PL0 was interrupt cause
     //UARTprintf("PL0 Button Up\n");
     button_status = RIGHT_BUTTON_RELEASED;
-    xTaskNotifyGive(xAlert);
+
+    if(DEGRADED_MODE)
+    {
+        xTaskNotifyGive(xAlert);
+    }
+    else
+    {
+        //send information to sender task
+    }
+
     GPIOIntRegister(GPIO_PORTL_BASE, onButtonDown);     // Register our handler function for port A
     GPIOIntTypeSet(GPIO_PORTL_BASE, GPIO_PIN_0,
                    GPIO_FALLING_EDGE);                  // Configure PL0 for falling edge trigger
@@ -187,7 +252,16 @@ void left_button_released()
     // PL1 was interrupt cause
     //UARTprintf("PL1 Button Up\n");
     button_status = LEFT_BUTTON_RELEASED;
-    xTaskNotifyGive(xAlert);
+
+    if(DEGRADED_MODE)
+    {
+        xTaskNotifyGive(xAlert);
+    }
+    else
+    {
+        //send information to sender task
+    }
+
     GPIOIntRegister(GPIO_PORTL_BASE, onButtonDown);         // Register our handler function for port L
     GPIOIntTypeSet(GPIO_PORTL_BASE, GPIO_PIN_1,
                    GPIO_FALLING_EDGE);                      // Configure PL1 for falling edge trigger

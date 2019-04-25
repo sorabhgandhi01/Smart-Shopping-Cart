@@ -6,7 +6,7 @@
  */
 
 
-#include "motor_driver_task.h"
+#include <motor_control_task.h>
 #include "helper.h"
 
 extern button_status_t button_status;
@@ -25,8 +25,8 @@ void vMotor_Driver_Task(void *pvParameters)
 }
 
 
-/* Alert Task */
-void alert_task(void *pvParameters)
+/* Degraded Motor Operation Task */
+void vDegraded_Motor_Operation_Task(void *pvParameters)
 {
     TaskData_t task_data;
     for(;;)
@@ -92,4 +92,36 @@ void alert_task(void *pvParameters)
         }
         xSemaphoreGive(xMutex);
     }
+}
+
+
+void vForward_Motion_Task(void *pvParameters)
+{
+    ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
+    FORWARD();
+
+}
+void vBackward_Motion_Task(void *pvParameters)
+{
+    ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
+    BACKWARD();
+
+}
+void vLeft_Motion_Task(void *pvParameters)
+{
+    ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
+    LEFT();
+
+}
+void vRight_Motion_Task(void *pvParameters)
+{
+    ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
+    RIGHT();
+
+}
+void vStop_Motion_Task(void *pvParameters)
+{
+    ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
+    STOP();
+
 }

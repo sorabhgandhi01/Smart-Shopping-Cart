@@ -23,6 +23,11 @@
  * EXPORTED GLOBAL VARIBALES                                                *
  ****************************************************************************/
 extern TaskHandle_t xAlert;
+extern TaskHandle_t xLeft_Motion;
+extern TaskHandle_t xStop_Motion;
+extern TaskHandle_t xRight_Motion;
+extern TaskHandle_t xForward_Motion;
+extern TaskHandle_t xBackward_Motion;
 
 /****************************************************************************
  * ENUMERATIONS                                                             *

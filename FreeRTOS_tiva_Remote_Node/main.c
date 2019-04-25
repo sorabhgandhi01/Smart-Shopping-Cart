@@ -9,6 +9,7 @@
 /****************************************************************************
  * HEADER FILES                                                             *
  ****************************************************************************/
+#include <motor_control_task.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include "main.h"
@@ -41,7 +42,6 @@
 #include "gesture_sensor_task.h"
 #include "push_button_task.h"
 #include "ultrasonic_sensor_task.h"
-#include "motor_driver_task.h"
 #include "send_to_bbg_task.h"
 
 /****************************************************************************
@@ -49,10 +49,17 @@
  ****************************************************************************/
 uint32_t output_clock_rate_hz;
 TaskHandle_t Gesture_Task;
+TaskHandle_t Ultrasonic_Task;
 TaskHandle_t xAlert = NULL;
+TaskHandle_t xLeft_Motion = NULL;
+TaskHandle_t xStop_Motion = NULL;
+TaskHandle_t xRight_Motion = NULL;
+TaskHandle_t xForward_Motion = NULL;
+TaskHandle_t xBackward_Motion = NULL;
 
 SemaphoreHandle_t xMutex;
 QueueHandle_t xQueue;
+
 /****************************************************************************
  * FUNCTION NAME : MAIN                                                     *
  ****************************************************************************/
@@ -83,15 +90,34 @@ int main(void)
     }
 
 
-    /* Create Alert Task */
+    /* Create InterBoard [Send Message] Task */
     xTaskCreate(send_to_bbg_task, (const portCHAR *)"SENDER TASK",
                 configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 
 
-    /* Create Alert Task */
-    xTaskCreate(alert_task, (const portCHAR *)"ALERT TASK",
+    /* Create Degraded Motor Operation Task */
+    xTaskCreate(vDegraded_Motor_Operation_Task, (const portCHAR *)"DEGRADED MOTOR OPERATION TASK",
                 configMINIMAL_STACK_SIZE, NULL, 1, &xAlert);
 
+    /* Create Forward Motion Task */
+    xTaskCreate(vForward_Motion_Task, (const portCHAR *)"FORWARD MOTION TASK",
+                configMINIMAL_STACK_SIZE, NULL, 1, &xForward_Motion);
+
+    /* Create Backward Motion Task */
+    xTaskCreate(vBackward_Motion_Task, (const portCHAR *)"BACKWARD MOTION TASK",
+                configMINIMAL_STACK_SIZE, NULL, 1, &xBackward_Motion);
+
+    /* Create Left Motion Task */
+    xTaskCreate(vLeft_Motion_Task, (const portCHAR *)"LEFT MOTION TASK",
+                configMINIMAL_STACK_SIZE, NULL, 1, &xLeft_Motion);
+
+    /* Create Right Motion Task */
+    xTaskCreate(vRight_Motion_Task, (const portCHAR *)"RIGHT MOTION TASK",
+                configMINIMAL_STACK_SIZE, NULL, 1, &xRight_Motion);
+
+    /* Create Stop Motion Task */
+    xTaskCreate(vStop_Motion_Task, (const portCHAR *)"STOP MOTION TASK",
+                configMINIMAL_STACK_SIZE, NULL, 1, &xStop_Motion);
 
     /* Create Push Button Task */
     xTaskCreate(vPush_Button_Task, (const portCHAR *)"Push Button",
@@ -101,10 +127,9 @@ int main(void)
     xTaskCreate(vMotor_Driver_Task, (const portCHAR *)"Motor Driver Task",
                 configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 
-
     /* Create Ultrasonic Distance Sensor Task */
     xTaskCreate(vUltraSonic_Task, (const portCHAR *)"Distance",
-                configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+                configMINIMAL_STACK_SIZE, NULL, 1, &Ultrasonic_Task);
 
     /* Create Gesture Sensor Task */
     xTaskCreate(vGesture_Sensor_Task, (const portCHAR *)"Gesture",

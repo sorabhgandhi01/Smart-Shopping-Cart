@@ -5,9 +5,10 @@
  * @brief   :
  */
 
-#ifndef MOTOR_DRIVER_TASK_H_
-#define MOTOR_DRIVER_TASK_H_
+#ifndef MOTOR_CONTROL_TASK_H_
+#define MOTOR_CONTROL_TASK_H_
 
+#include <motor_control.h>
 #include <string.h>
 #include "push_button_task.h"
 #include "FreeRTOS.h"
@@ -15,13 +16,15 @@
 #include "utils/uartstdio.h"
 #include "task.h"
 #include "push_button.h"
-#include "motor_driver.h"
 #include "semphr.h"
 
 
 void vMotor_Driver_Task(void *pvParameters);
-void alert_task(void *pvParameters);
+void vDegraded_Motor_Operation_Task(void *pvParameters);
+void vForward_Motion_Task(void *pvParameters);
+void vBackward_Motion_Task(void *pvParameters);
+void vLeft_Motion_Task(void *pvParameters);
+void vRight_Motion_Task(void *pvParameters);
+void vStop_Motion_Task(void *pvParameters);
 
-
-
-#endif /* MOTOR_DRIVER_TASK_H_ */
+#endif /* MOTOR_CONTROL_TASK_H_ */

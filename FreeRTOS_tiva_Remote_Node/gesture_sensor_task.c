@@ -13,6 +13,7 @@ volatile uint8_t isr_flag = 0;
 
 extern SemaphoreHandle_t xMutex;
 extern QueueHandle_t xQueue;
+extern TaskHandle_t Gesture_Task;
 
 /* Gesture sensor task */
 void vGesture_Sensor_Task(void *pvParameters)
@@ -21,12 +22,15 @@ void vGesture_Sensor_Task(void *pvParameters)
 
     /* Initialize Gesture Sensor Task */
     if(SparkFun_APDS9960_Init()){
-        UARTprintf("APDS-9960 initialization complete!s\n\r");
+        UARTprintf("APDS-9960 initialization complete!\n\r");
     }
     else
     {
         UARTprintf("Something went wrong during APDS-9960 init!\n\r");
         //Kill Gesture Recognition Task
+        UARTprintf("Gesture Task Killed\n\r");
+        vTaskDelete(Gesture_Task);
+
     }
 
     /* Enable Gesture Sensor */
@@ -136,7 +140,6 @@ void vGesture_Sensor_Task(void *pvParameters)
                         break;
                 }
             }
-            isr_flag = 0;
             GPIOIntEnable(GPIO_PORTA_BASE,GPIO_PIN_6);
 
 
