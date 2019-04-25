@@ -16,6 +16,10 @@
  ****************************************************************************/
 extern uint32_t output_clock_rate_hz;
 
+extern SemaphoreHandle_t xMutex;
+
+extern QueueHandle_t xQueue;
+
 /****************************************************************************
  * GLOBAL VARIABLES                                                         *
  ****************************************************************************/
@@ -34,8 +38,11 @@ void vUltraSonic_Task(void *pvParameters)
 
     ultrasonic_sensor_init();
 
+    TaskData_t ultrasonic_data;
     while(1)
     {
+        xSemaphoreTake(xMutex,( TickType_t )10);
+
         getDistance();
 
         while(pulse_sent != 0);
@@ -46,8 +53,18 @@ void vUltraSonic_Task(void *pvParameters)
 
         distance = distance/58;
 
-        UARTprintf("Distance = %d\n\r",time);
+        //UARTprintf("Distance = %d\n\r",time);
+
+        strcpy(ultrasonic_data.msgID , "ULTRASONIC");
+        ultrasonic_data.TaskData = time;
+        if(xQueueSend(xQueue, (void *)&ultrasonic_data,(TickType_t)10) != pdPASS)
+        {
+            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+        }
+
+        xSemaphoreGive(xMutex);
 
         vTaskDelay(1000/portTICK_PERIOD_MS);
+
     }
 }

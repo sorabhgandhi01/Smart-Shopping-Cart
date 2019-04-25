@@ -32,6 +32,8 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
+#include "semphr.h"
+#include "helper.h"
 
 /****************************************************************************
  * USER DEFINED HEADER FILES                                                *
@@ -40,7 +42,7 @@
 #include "push_button_task.h"
 #include "ultrasonic_sensor_task.h"
 #include "motor_driver_task.h"
-
+#include "send_to_bbg_task.h"
 
 /****************************************************************************
  * GLOBAL VARIABLES                                                         *
@@ -49,6 +51,8 @@ uint32_t output_clock_rate_hz;
 TaskHandle_t Gesture_Task;
 TaskHandle_t xAlert = NULL;
 
+SemaphoreHandle_t xMutex;
+QueueHandle_t xQueue;
 /****************************************************************************
  * FUNCTION NAME : MAIN                                                     *
  ****************************************************************************/
@@ -67,10 +71,28 @@ int main(void)
     /* Set up the UART which is connected to the virtual COM port */
     UARTStdioConfig(0, 115200, SYSTEM_CLOCK);
 
+    xMutex = xSemaphoreCreateMutex();
+
+    /* Create Message Queue */
+    xQueue = xQueueCreate(30,sizeof(TaskData_t));
+
+    /* Check if Queue has been created */
+    if( xQueue == NULL )
+    {
+       UARTprintf("\r\nQueue was not created!");
+    }
+
+
     /* Create Alert Task */
-//    xTaskCreate(alert_task, (const portCHAR *)"ALERT TASK",
-//                configMINIMAL_STACK_SIZE, NULL, 1, &xAlert);
-//
+    xTaskCreate(send_to_bbg_task, (const portCHAR *)"SENDER TASK",
+                configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+
+
+    /* Create Alert Task */
+    xTaskCreate(alert_task, (const portCHAR *)"ALERT TASK",
+                configMINIMAL_STACK_SIZE, NULL, 1, &xAlert);
+
+
     /* Create Push Button Task */
     xTaskCreate(vPush_Button_Task, (const portCHAR *)"Push Button",
                 configMINIMAL_STACK_SIZE, NULL, 1, NULL);
@@ -80,9 +102,9 @@ int main(void)
                 configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 
 
-//    /* Create Ultrasonic Distance Sensor Task */
-//    xTaskCreate(vUltraSonic_Task, (const portCHAR *)"Distance",
-//                configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+    /* Create Ultrasonic Distance Sensor Task */
+    xTaskCreate(vUltraSonic_Task, (const portCHAR *)"Distance",
+                configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 
     /* Create Gesture Sensor Task */
     xTaskCreate(vGesture_Sensor_Task, (const portCHAR *)"Gesture",

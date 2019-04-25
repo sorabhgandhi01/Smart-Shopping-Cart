@@ -13,6 +13,7 @@
  ****************************************************************************/
 #include <stdint.h>
 #include <stdbool.h>
+#include <string.h>
 #include "utils/uartstdio.h"
 #include "driverlib/uart.h"
 #include "driverlib/sysctl.h"
@@ -26,6 +27,8 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "ultrasonic_sensor.h"
+#include "semphr.h"
+#include "helper.h"
 
 
 /****************************************************************************

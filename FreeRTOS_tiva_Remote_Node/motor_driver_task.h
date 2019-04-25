@@ -8,13 +8,15 @@
 #ifndef MOTOR_DRIVER_TASK_H_
 #define MOTOR_DRIVER_TASK_H_
 
-
+#include <string.h>
 #include "push_button_task.h"
 #include "FreeRTOS.h"
 #include "queue.h"
 #include "utils/uartstdio.h"
 #include "task.h"
 #include "push_button.h"
+#include "motor_driver.h"
+#include "semphr.h"
 
 
 void vMotor_Driver_Task(void *pvParameters);

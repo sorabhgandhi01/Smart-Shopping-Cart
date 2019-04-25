@@ -78,7 +78,7 @@ void onButtonUp(void)
 void forward_button_pressed()
 {
     // PJ0 was interrupt cause
-    UARTprintf("PJ0 Button Down\n");
+    //UARTprintf("PJ0 Button Down\n");
     button_status = FORWARD_BUTTON_PRESSED;
     xTaskNotifyGive(xAlert);
     GPIOIntRegister(GPIO_PORTJ_BASE, onButtonUp);           // Register our handler function for port J
@@ -93,7 +93,7 @@ void forward_button_pressed()
 void backward_button_pressed()
 {
     // PJ1 was interrupt cause
-    UARTprintf("PJ1 Button Down\n");
+    //UARTprintf("PJ1 Button Down\n");
     button_status = BACKWARD_BUTTON_PRESSED;
     xTaskNotifyGive(xAlert);
     GPIOIntRegister(GPIO_PORTJ_BASE, onButtonUp);       // Register our handler function for port J
@@ -108,7 +108,7 @@ void backward_button_pressed()
 void right_button_pressed()
 {
     // PL0 was interrupt cause
-    UARTprintf("PL0 Button Down\n");
+    //UARTprintf("PL0 Button Down\n");
     button_status = RIGHT_BUTTON_PRESSED;
     xTaskNotifyGive(xAlert);
     GPIOIntRegister(GPIO_PORTL_BASE, onButtonUp);       // Register our handler function for port A
@@ -124,7 +124,7 @@ void right_button_pressed()
 void left_button_pressed()
 {
     // PL1 was interrupt cause
-    UARTprintf("PL1 Button Down\n");
+    //UARTprintf("PL1 Button Down\n");
     button_status = LEFT_BUTTON_PRESSED;
     xTaskNotifyGive(xAlert);
     GPIOIntRegister(GPIO_PORTL_BASE, onButtonUp);           // Register our handler function for port A
@@ -140,7 +140,7 @@ void left_button_pressed()
 void forward_button_released()
 {
     // PJ0 was interrupt cause
-    UARTprintf("PJ0 Button Up\n");
+    //UARTprintf("PJ0 Button Up\n");
     button_status = FORWARD_BUTTON_RELEASED;
     xTaskNotifyGive(xAlert);
     GPIOIntRegister(GPIO_PORTJ_BASE, onButtonDown);         // Register our handler function for port J
@@ -155,7 +155,7 @@ void forward_button_released()
 void backward_button_released()
 {
     // PJ1 was interrupt cause
-    UARTprintf("PJ1 Button Up\n");
+    //UARTprintf("PJ1 Button Up\n");
     button_status = BACKWARD_BUTTON_RELEASED;
     xTaskNotifyGive(xAlert);
     GPIOIntRegister(GPIO_PORTJ_BASE, onButtonDown);         // Register our handler function for port J
@@ -170,7 +170,7 @@ void backward_button_released()
 void right_button_released()
 {
     // PL0 was interrupt cause
-    UARTprintf("PL0 Button Up\n");
+    //UARTprintf("PL0 Button Up\n");
     button_status = RIGHT_BUTTON_RELEASED;
     xTaskNotifyGive(xAlert);
     GPIOIntRegister(GPIO_PORTL_BASE, onButtonDown);     // Register our handler function for port A
@@ -185,7 +185,7 @@ void right_button_released()
 void left_button_released()
 {
     // PL1 was interrupt cause
-    UARTprintf("PL1 Button Up\n");
+    //UARTprintf("PL1 Button Up\n");
     button_status = LEFT_BUTTON_RELEASED;
     xTaskNotifyGive(xAlert);
     GPIOIntRegister(GPIO_PORTL_BASE, onButtonDown);         // Register our handler function for port L

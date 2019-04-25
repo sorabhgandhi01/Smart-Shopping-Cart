@@ -10,6 +10,7 @@
 
 /* Header Files */
 #include <stdbool.h>
+#include <string.h>
 #include "utils/uartstdio.h"
 #include "I2C.h"
 #include "FreeRTOS.h"
@@ -17,6 +18,8 @@
 #include "portmacro.h"
 #include "motor_driver.h"
 #include "gesture_sensor.h"
+#include "semphr.h"
+#include "helper.h"
 
 /* Gesture sensor task */
 void vGesture_Sensor_Task(void *pvParameters);

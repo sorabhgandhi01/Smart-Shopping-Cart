@@ -11,6 +11,9 @@
 /* Global Variables */
 volatile uint8_t isr_flag = 0;
 
+extern SemaphoreHandle_t xMutex;
+extern QueueHandle_t xQueue;
+
 /* Gesture sensor task */
 void vGesture_Sensor_Task(void *pvParameters)
 {
@@ -39,47 +42,96 @@ void vGesture_Sensor_Task(void *pvParameters)
     /* Initialize interrupt service routine */
     attachInterrupt();
 
+    TaskData_t gesture_sensor_data;
+
     for(;;)
     {
-//        if(isr_flag == 1)
-//        {
-//            UARTprintf("In ISR\n\r");
+        xSemaphoreTake(xMutex, ( TickType_t )10);
             if(isGestureAvailable())
             {
                 UARTprintf("Reading Gesture\n\r");
                 switch(readGesture())
                 {
                 case DIR_UP:
-                        UARTprintf("UP\n\r");
+                        strcpy(gesture_sensor_data.msgID , "GESTURE:[F]");
+                        gesture_sensor_data.TaskData = 11;
+                        if(xQueueSend(xQueue, (void *)&gesture_sensor_data,(TickType_t)10) != pdPASS)
+                        {
+                            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+                        }
+
+                        //UARTprintf("UP\n\r");
                         FORWARD();
                         vTaskDelay(5000/portTICK_PERIOD_MS);
                         STOP();
                         break;
                 case DIR_DOWN:
-                        UARTprintf("DOWN\n\r");
+                        strcpy(gesture_sensor_data.msgID , "GESTURE:[B]");
+                        gesture_sensor_data.TaskData = 00;
+                        if(xQueueSend(xQueue, (void *)&gesture_sensor_data,(TickType_t)10) != pdPASS)
+                        {
+                            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+                        }
+
+                        //UARTprintf("DOWN\n\r");
                         BACKWARD();
                         vTaskDelay(5000/portTICK_PERIOD_MS);
                         STOP();
                         break;
                 case DIR_LEFT:
-                        UARTprintf("LEFT\n\r");
+                        strcpy(gesture_sensor_data.msgID , "GESTURE:[L]");
+                        gesture_sensor_data.TaskData = 01;
+                        if(xQueueSend(xQueue, (void *)&gesture_sensor_data,(TickType_t)10) != pdPASS)
+                        {
+                            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+                        }
+
+                        //UARTprintf("LEFT\n\r");
                         LEFT();
                         vTaskDelay(5000/portTICK_PERIOD_MS);
                         STOP();
                         break;
                 case DIR_RIGHT:
-                        UARTprintf("RIGHT\n\r");
+                        strcpy(gesture_sensor_data.msgID , "GESTURE:[R]");
+                        gesture_sensor_data.TaskData = 10;
+                        if(xQueueSend(xQueue, (void *)&gesture_sensor_data,(TickType_t)10) != pdPASS)
+                        {
+                            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+                        }
+
+                        //UARTprintf("RIGHT\n\r");
                         RIGHT();
                         vTaskDelay(5000/portTICK_PERIOD_MS);
                         STOP();
                         break;
                 case DIR_NEAR:
-                        UARTprintf("NEAR\n\r");
+                        strcpy(gesture_sensor_data.msgID , "GESTURE:[NEAR]");
+                        gesture_sensor_data.TaskData = 999;
+                        if(xQueueSend(xQueue, (void *)&gesture_sensor_data,(TickType_t)10) != pdPASS)
+                        {
+                            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+                        }
+
+                        //UARTprintf("NEAR\n\r");
                         break;
                 case DIR_FAR:
-                        UARTprintf("FAR\n\r");
+                        strcpy(gesture_sensor_data.msgID , "GESTURE:[FAR]");
+                        gesture_sensor_data.TaskData = 111;
+                        if(xQueueSend(xQueue, (void *)&gesture_sensor_data,(TickType_t)10) != pdPASS)
+                        {
+                            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+                        }
+
+                        //UARTprintf("FAR\n\r");
                         break;
                 default:
+                        strcpy(gesture_sensor_data.msgID , "GESTURE:[NONE]");
+                        gesture_sensor_data.TaskData = 1000;
+                        if(xQueueSend(xQueue, (void *)&gesture_sensor_data,(TickType_t)10) != pdPASS)
+                        {
+                            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+                        }
+
                         UARTprintf("NONE\n\r");
                         break;
                 }
@@ -100,6 +152,7 @@ void vGesture_Sensor_Task(void *pvParameters)
 //            attachInterrupt();
 //        }
         SysCtlDelay(1000000);
+        xSemaphoreGive(xMutex);
     }
 
 
