@@ -16,6 +16,8 @@
 extern int pulse_sent;
 extern uint32_t time_start;
 extern uint32_t time_end;
+int falling_edge = 0;
+int rising_edge = 0;
 
 /****************************************************************************
  * ULTRASONIC SENSOR INIT                                                   *
@@ -70,6 +72,8 @@ void UltraSoniC_IRQ_Handler()
     //Echo pulse - rising edge
     if(GPIOPinRead(GPIO_PORTK_BASE,GPIO_PIN_1) == GPIO_PIN_1)
     {
+//        UARTprintf("RISING EDGE\n\r");
+//        rising_edge = 1;
         HWREG(TIMER2_BASE + TIMER_O_TAV) = 0;
         TimerEnable(TIMER2_BASE,TIMER_A);
         time_start = TimerValueGet(TIMER2_BASE,TIMER_A);
@@ -77,6 +81,8 @@ void UltraSoniC_IRQ_Handler()
     }
     else
     {
+//        UARTprintf("FALLING EDGE\n\r");
+//        falling_edge =1;
         time_end = TimerValueGet(TIMER2_BASE,TIMER_A);
         TimerDisable(TIMER2_BASE,TIMER_A);
         pulse_sent = 1;
