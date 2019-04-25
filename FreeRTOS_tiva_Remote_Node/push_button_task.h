@@ -1,36 +1,40 @@
-/*
- * push_button_task.h
- *
- *  Created on: Apr 19, 2019
- *      Author: omrah
+/*@Filename : push_button_task.h
+ * @Author  : Om Raheja & Sorabh Gandhi
+ * @Course  : [PROJECT 2]Advanced Embedded Software Development Spring 2019
+ * @Date    : 19th April 2019
+ * @brief   :
+ *@References : https://e2e.ti.com/support/microcontrollers/other/f/908/t/332605
  */
+
 
 #ifndef PUSH_BUTTON_TASK_H_
 #define PUSH_BUTTON_TASK_H_
 
+
+/****************************************************************************
+ * HEADER FILES                                                             *
+ ****************************************************************************/
 #include <stdint.h>
 #include <stdbool.h>
 #include "utils/uartstdio.h"
-#include "driverlib/gpio.h"
 #include "driverlib/sysctl.h"
-#include "driverlib/inc/hw_memmap.h"
 #include "FreeRTOS.h"
 #include "queue.h"
-#include "task.h"
+#include "push_button.h"
 
-typedef enum
-{
-    FORWARD_BUTTON_PRESSED,
-    FORWARD_BUTTON_RELEASED,
-    BACKWARD_BUTTON_PRESSED,
-    BACKWARD_BUTTON_RELEASED,
-    RIGHT_BUTTON_PRESSED,
-    RIGHT_BUTTON_RELEASED,
-    LEFT_BUTTON_PRESSED,
-    LEFT_BUTTON_RELEASED
-}button_status_t;
+/****************************************************************************
+ * FUNCTION PROTOTYPES                                                      *
+ ****************************************************************************/
 
-
+/********************************************
+ * vPUSH_BUTTON_TASK                        *
+ * ******************************************/
+/*@brief: Handles Push Button events.
+ *
+ *@param: void *pvParameters
+ *
+ *@return: none
+ * */
 void vPush_Button_Task(void *pvParameters);
 
 #endif /* PUSH_BUTTON_TASK_H_ */

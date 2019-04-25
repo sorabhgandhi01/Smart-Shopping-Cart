@@ -22,7 +22,7 @@
 #include "driverlib/gpio.h"
 #include "driverlib/pin_map.h"
 
-#include "gesture_sensor.h"
+#include "gesture_sensor_task.h"
 
 
 ///* Exported Global variables */

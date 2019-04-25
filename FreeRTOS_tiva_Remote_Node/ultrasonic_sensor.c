@@ -1,51 +1,25 @@
-/*
- * ultrasonic_sensor.c
- *
- *  Created on: Apr 20, 2019
- *      Author: omrah
+/*@Filename : ultrasonic_sensor.c
+ * @Author  : Om Raheja & Sorabh Gandhi
+ * @Course  : [PROJECT 2]Advanced Embedded Software Development Spring 2019
+ * @Date    : 19th April 2019
+ * @brief   :
  */
 
+/****************************************************************************
+ * USER DEFINED HEADER FILES                                                *
+ ****************************************************************************/
 #include "ultrasonic_sensor.h"
-#include "sysctl.h"
 
+/****************************************************************************
+ * EXPORTED GLOBAL VARIABLES                                                *
+ ****************************************************************************/
+extern int pulse_sent;
+extern uint32_t time_start;
+extern uint32_t time_end;
 
-/* Exported Global variables */
-uint32_t output_clock_rate_hz;
-
-float distance;
-int pulse_sent = 0;
-uint32_t time_start;
-uint32_t time_end;
-uint32_t time;
-
-/* Ultrasonic Distance Sensor Task */
-void vUltraSonic_Task(void *pvParameters)
-{
-    UARTprintf("UltraSonic Sensor Task\n\r");
-
-    ultrasonic_sensor_init();
-
-    while(1)
-    {
-        getDistance();
-
-        while(pulse_sent != 0);
-
-        time = time_end - time_start;
-
-        distance = (((float)(1.0/(output_clock_rate_hz/1000000))*time));
-
-        distance = distance/58;
-
-        UARTprintf("Distance = %d\n\r",time);
-
-        vTaskDelay(1000/portTICK_PERIOD_MS);
-    }
-
-
-}
-
-
+/****************************************************************************
+ * ULTRASONIC SENSOR INIT                                                   *
+ ****************************************************************************/
 void ultrasonic_sensor_init()
 {
     UARTprintf("Configuring Ultrasonic Sensor................\n\r");
@@ -71,6 +45,9 @@ void ultrasonic_sensor_init()
     UARTprintf("Ultrasonic Sensor Configured Successfully\n\r");
 }
 
+/****************************************************************************
+ * GET DISTANCE                                                             *
+ ****************************************************************************/
 void getDistance()
 {
     GPIOPinWrite(GPIO_PORTK_BASE,GPIO_PIN_0,GPIO_PIN_0);
@@ -80,6 +57,9 @@ void getDistance()
 }
 
 
+/****************************************************************************
+ * ULTRASONIC IRQ HANDLER                                                   *
+ ****************************************************************************/
 void UltraSoniC_IRQ_Handler()
 {
     IntMasterDisable();
