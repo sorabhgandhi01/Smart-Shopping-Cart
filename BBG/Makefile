@@ -4,12 +4,12 @@ CC = arm-linux-gnueabihf-gcc
 
 CFLAGS = -Iinc/
 
-LIBS = -lpthread
+LIBS = -lpthread -lrt
 
 vpath %.c src/
 vpath %.h inc/
 
-SRC := uart.c main.c
+SRC := uart.c main.c posix_timer.c
 
 OBJ := $(SRC:.c=.o)
 

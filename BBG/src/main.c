@@ -13,6 +13,7 @@
 
 #include "uart.h"
 #include "comm_interface.h"
+#include "posix_timer.h"
 
 #define NUM_THREAD 3
 
@@ -64,11 +65,23 @@ void *uart_tx_thread(void *arg)
 		pthread_cancel(thread[0]);
         }
 
-	while (status > 0) 
+	if ((set_timer(&hb_send_id, heart_beat_send_timer_handler)) != 0)
 	{
-		status = uart_write(&w_data, 1);
+		printf("Error in setting-up timer for heat-beat send task\n");
+	}
 
-		usleep(100000);
+	if ((start_timer(hb_send_id, HB_FREQ)) != 0)
+	{
+		printf("Error in starting the timer for heart-beat send task\n");
+	}
+
+	while (1) 
+	{
+		if (FLAG_HB_SEND) {
+
+			uart_write(&w_data, 1);
+			FLAG_HB_SEND = 0;
+		}
 	}
 
 	pthread_cancel(thread[0]);
