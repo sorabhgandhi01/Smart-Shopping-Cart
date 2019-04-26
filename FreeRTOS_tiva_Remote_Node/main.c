@@ -81,7 +81,7 @@ int main(void)
     xMutex = xSemaphoreCreateMutex();
 
     /* Create Message Queue */
-    xQueue = xQueueCreate(30,sizeof(TaskData_t));
+    xQueue = xQueueCreate(30,sizeof(TIVA_MSG));
 
     /* Check if Queue has been created */
     if( xQueue == NULL )

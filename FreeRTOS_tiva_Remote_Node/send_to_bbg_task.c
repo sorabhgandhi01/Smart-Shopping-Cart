@@ -17,13 +17,13 @@ void send_to_bbg_task(void *pvParameters)
 {
     UARTprintf("***********SEND_TO_BBG_TASK************\n\r");
 
-    TaskData_t task_data;
+    TIVA_MSG task_data;
 
     while(1)
     {
         if(xQueueReceive( xQueue, &(task_data), ( TickType_t ) 10 ))
         {
-            UARTprintf("[SEND_TO_BBG]:\tMessage ID:%s\tData:%d\n\r",task_data.msgID,task_data.TaskData);
+            UARTprintf("MESSAGE TYPE = %d\tDATA = %d\n\r",task_data.msg_type,task_data.data.pb_data);
         }
 
     }

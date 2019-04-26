@@ -22,9 +22,6 @@ extern QueueHandle_t xQueue;
 
 extern TaskHandle_t Ultrasonic_Task;
 
-extern int falling_edge;
-extern int rising_edge;
-
 
 /****************************************************************************
  * GLOBAL VARIABLES                                                         *
@@ -43,7 +40,8 @@ void vUltraSonic_Task(void *pvParameters)
     UARTprintf("UltraSonic Sensor Task\n\r");
     int dead = 0;
     ultrasonic_sensor_init();
-    TaskData_t ultrasonic_data;
+//    TaskData_t ultrasonic_data;
+    TIVA_MSG ultrasonic_sensor_data;
 
     while(1)
     {
@@ -53,25 +51,27 @@ void vUltraSonic_Task(void *pvParameters)
         if (pulse_sent != 0)
         {
             time = time_end - time_start;
-
-            UARTprintf("TIME = %d\n\r",time);
-
             dead = 0;
             pulse_sent = 0;
-//            falling_edge = 0;
-//            rising_edge = 0;
 
             distance = (((float)(1.0/(output_clock_rate_hz/1000000))*time));
-
             distance = distance/58;
 
-            strcpy(ultrasonic_data.msgID , "ULTRASONIC");
-            ultrasonic_data.TaskData = distance;
+//            strcpy(ultrasonic_data.msgID , "ULTRASONIC");
+//            ultrasonic_data.TaskData = distance;
+//            if(xQueueSend(xQueue, (void *)&ultrasonic_data,(TickType_t)10) != pdPASS)
+//            {
+//                UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+//            }
 
-            if(xQueueSend(xQueue, (void *)&ultrasonic_data,(TickType_t)10) != pdPASS)
+            ultrasonic_sensor_data.msg_type = DISTANCE_SENSOR_DATA;
+            ultrasonic_sensor_data.data.distance = distance;
+
+            if(xQueueSend(xQueue, (void *)&ultrasonic_sensor_data,(TickType_t)10) != pdPASS)
             {
                 UARTprintf("Failed to post the message, even after 10 ticks\n\r");
             }
+
 
             xSemaphoreGive(xMutex);
 

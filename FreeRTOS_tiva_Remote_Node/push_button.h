@@ -18,6 +18,8 @@
 #include "driverlib/sysctl.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "helper.h"
+#include "queue.h"
 
 /****************************************************************************
  * EXPORTED GLOBAL VARIBALES                                                *
@@ -32,17 +34,17 @@ extern TaskHandle_t xBackward_Motion;
 /****************************************************************************
  * ENUMERATIONS                                                             *
  ****************************************************************************/
-typedef enum
-{
-    FORWARD_BUTTON_PRESSED,
-    FORWARD_BUTTON_RELEASED,
-    BACKWARD_BUTTON_PRESSED,
-    BACKWARD_BUTTON_RELEASED,
-    RIGHT_BUTTON_PRESSED,
-    RIGHT_BUTTON_RELEASED,
-    LEFT_BUTTON_PRESSED,
-    LEFT_BUTTON_RELEASED
-}button_status_t;
+//typedef enum
+//{
+//    FORWARD_BUTTON_PRESSED,
+//    FORWARD_BUTTON_RELEASED,
+//    BACKWARD_BUTTON_PRESSED,
+//    BACKWARD_BUTTON_RELEASED,
+//    RIGHT_BUTTON_PRESSED,
+//    RIGHT_BUTTON_RELEASED,
+//    LEFT_BUTTON_PRESSED,
+//    LEFT_BUTTON_RELEASED
+//}button_status_t;
 
 
 /****************************************************************************

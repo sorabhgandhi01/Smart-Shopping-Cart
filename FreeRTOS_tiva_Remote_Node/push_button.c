@@ -11,14 +11,14 @@
  ****************************************************************************/
 #include "push_button.h"
 
-#define DEGRADED_MODE 1
+#define DEGRADED_MODE 0
 
 /****************************************************************************
  * GLOBAL VARIABLES                                                         *
  ****************************************************************************/
-button_status_t button_status;
-
-
+static TIVA_MSG Button_Status;
+PB_DATA button_status;
+extern QueueHandle_t xQueue;
 /****************************************************************************
  * ON BUTTON DOWN                                                           *
  ****************************************************************************/
@@ -80,7 +80,7 @@ void forward_button_pressed()
 {
     // PJ0 was interrupt cause
     //UARTprintf("PJ0 Button Down\n");
-    button_status = FORWARD_BUTTON_PRESSED;
+    //button_status = FORWARD_BUTTON_PRESSED;
 
     if(DEGRADED_MODE)
     {
@@ -88,7 +88,17 @@ void forward_button_pressed()
     }
     else
     {
-        //send information to sender task
+        Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
+        Button_Status.data.pb_data = FORWARD_BUTTON_PRESSED;
+
+//        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
+//        task_data.TaskData = 11;
+        if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
+        {
+            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+        }
+
+
     }
     GPIOIntRegister(GPIO_PORTJ_BASE, onButtonUp);           // Register our handler function for port J
     GPIOIntTypeSet(GPIO_PORTJ_BASE, GPIO_PIN_0,
@@ -111,7 +121,16 @@ void backward_button_pressed()
     }
     else
     {
-        //send information to sender task
+        Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
+        Button_Status.data.pb_data = BACKWARD_BUTTON_PRESSED;
+
+//        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
+//        task_data.TaskData = 11;
+        if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
+        {
+            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+        }
+
     }
 
 
@@ -136,7 +155,16 @@ void right_button_pressed()
     }
     else
     {
-        //send information to sender task
+        Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
+        Button_Status.data.pb_data = RIGHT_BUTTON_PRESSED;
+
+//        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
+//        task_data.TaskData = 11;
+        if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
+        {
+            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+        }
+
     }
 
     GPIOIntRegister(GPIO_PORTL_BASE, onButtonUp);       // Register our handler function for port A
@@ -161,7 +189,16 @@ void left_button_pressed()
     }
     else
     {
-        //send information to sender task
+        Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
+        Button_Status.data.pb_data = LEFT_BUTTON_PRESSED;
+
+//        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
+//        task_data.TaskData = 11;
+        if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
+        {
+            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+        }
+
     }
 
 
@@ -187,7 +224,16 @@ void forward_button_released()
     }
     else
     {
-        //send information to sender task
+        Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
+        Button_Status.data.pb_data = FORWARD_BUTTON_RELEASED;
+
+//        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
+//        task_data.TaskData = 11;
+        if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
+        {
+            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+        }
+
     }
 
     GPIOIntRegister(GPIO_PORTJ_BASE, onButtonDown);         // Register our handler function for port J
@@ -211,7 +257,16 @@ void backward_button_released()
     }
     else
     {
-        //send information to sender task
+        Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
+        Button_Status.data.pb_data = BACKWARD_BUTTON_RELEASED;
+
+//        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
+//        task_data.TaskData = 11;
+        if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
+        {
+            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+        }
+
     }
 
     GPIOIntRegister(GPIO_PORTJ_BASE, onButtonDown);         // Register our handler function for port J
@@ -235,7 +290,16 @@ void right_button_released()
     }
     else
     {
-        //send information to sender task
+        Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
+        Button_Status.data.pb_data = RIGHT_BUTTON_RELEASED;
+
+//        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
+//        task_data.TaskData = 11;
+        if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
+        {
+            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+        }
+
     }
 
     GPIOIntRegister(GPIO_PORTL_BASE, onButtonDown);     // Register our handler function for port A
@@ -259,7 +323,16 @@ void left_button_released()
     }
     else
     {
-        //send information to sender task
+        Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
+        Button_Status.data.pb_data = LEFT_BUTTON_RELEASED;
+
+//        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
+//        task_data.TaskData = 11;
+        if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
+        {
+            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+        }
+
     }
 
     GPIOIntRegister(GPIO_PORTL_BASE, onButtonDown);         // Register our handler function for port L
