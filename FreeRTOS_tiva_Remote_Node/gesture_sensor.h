@@ -658,14 +658,15 @@ void attachInterrupt();
 int I2C_ReadDataBlock (uint8_t reg, uint8_t *val, unsigned int len);
 
 
-
-
-
-
 /*****************************************************************
  * FUNCTION NAME    : READ GESTURE                               *
  *****************************************************************/
 int readGesture();
 
+
+/*****************************************************************
+ * FUNCTION NAME    : SPARKFUN APDS9960 AVAILABLE                *
+ *****************************************************************/
+int SparkFun_APDS9960_Available();
 
 #endif /* GESTURE_SENSOR_H_ */

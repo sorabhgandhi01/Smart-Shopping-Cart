@@ -50,6 +50,14 @@ void vGesture_Sensor_Task(void *pvParameters)
 
     for(;;)
     {
+        if(SparkFun_APDS9960_Available() == -1)
+        {
+            UARTprintf("Gesture Sensor Down\n\rGesture Task Killed\n\r");
+            vTaskDelete(Gesture_Task);
+        }
+        else
+        {
+
 //        xSemaphoreTake(xMutex, ( TickType_t )10);
 //        UARTprintf("CHECKING IF GES SEN IS AVAILABLE OR NOT!\n\r");
             if(isGestureAvailable())
@@ -221,8 +229,8 @@ void vGesture_Sensor_Task(void *pvParameters)
 //        }
         SysCtlDelay(1000000);
 //        xSemaphoreGive(xMutex);
+        }
     }
-
 
 }
 
