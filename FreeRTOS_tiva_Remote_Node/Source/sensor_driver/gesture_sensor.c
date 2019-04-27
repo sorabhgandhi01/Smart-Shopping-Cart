@@ -1207,4 +1207,5 @@ int SparkFun_APDS9960_Available()
         UARTprintf("ID!= APDS9960_ID_1 or ID!= APDS9960_ID_2\n\r");
         return -1;
     }
+
 }

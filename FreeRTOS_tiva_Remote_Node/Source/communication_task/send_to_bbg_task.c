@@ -25,8 +25,8 @@ void send_to_bbg_task(void *pvParameters)
         if(xQueueReceive( xQueue, &(task_data), ( TickType_t ) 10 ))
         {
             UARTprintf("MESSAGE TYPE = %d\tDATA = %d\n\r",task_data.msg_type,task_data.sensor_data);
-            UART_send(&task_data, sizeof(task_data));
-            vTaskDelay(500 / portTICK_PERIOD_MS);
+           // UART_send(&task_data, sizeof(task_data));
+           // vTaskDelay(500 / portTICK_PERIOD_MS);
         }
 
     }
