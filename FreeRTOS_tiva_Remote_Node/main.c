@@ -135,6 +135,10 @@ int main(void)
     xTaskCreate(vGesture_Sensor_Task, (const portCHAR *)"Gesture",
                 configMINIMAL_STACK_SIZE, NULL, 1, &Gesture_Task);
 
+    /* Create InterBoard [Receive Message] Task */
+//    xTaskCreate(recv_from_bbg_task, (const portCHAR *)"RECEIVE TASK",
+//                configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+
     vTaskStartScheduler();
     return 0;
 }

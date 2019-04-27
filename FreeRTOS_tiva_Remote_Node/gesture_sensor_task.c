@@ -50,6 +50,13 @@ void vGesture_Sensor_Task(void *pvParameters)
 
     for(;;)
     {
+        if(SparkFun_APDS9960_Available() == -1)
+        {
+            UARTprintf("Gesture Sensor Down\n\rGesture Task Killed\n\r");
+            vTaskDelete(Gesture_Task);
+        }
+        else
+        {
             if(isGestureAvailable())
             {
                 UARTprintf("Reading Gesture\n\r");
@@ -112,8 +119,9 @@ void vGesture_Sensor_Task(void *pvParameters)
 
 
         SysCtlDelay(1000000);
-    }
 
+        }
+    }
 
 }
 
