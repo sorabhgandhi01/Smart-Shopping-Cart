@@ -21,7 +21,7 @@
 void *uart_rx_thread(void *arg)
 {
 	int fd;
-        int status = 1;
+    int status = 1;
 	TIVA_MSG r_data;
 
         fd = uart_rx_open("/dev/ttyO1", 115200);
@@ -30,17 +30,22 @@ void *uart_rx_thread(void *arg)
                 pthread_cancel(thread[1]);
         }
 
+	printf("Rx task initialized\r\n");
+
         while (1)
         {
 			r_data.msg_type = 0;
 			status = uart_read(&r_data, sizeof(r_data));
 
 			if (status > 0) {
-				//printf("%x \t %x \t %d\n", r_data.msg_type, r_data.log_level, r_data.sensor_data);
+				printf("REC %x \t %x \t %d\n", r_data.msg_type, r_data.log_level, r_data.sensor_data);
 			
 				if ((mq_send(logger_queue_t.mq, (char *) &r_data, sizeof(r_data), 0)) == -1) {
-					perror("Client: Message send error");
-					exit(EXIT_FAILURE);
+					printf("Uart_rx_thread: Message send error");
+				}
+				
+				if ((mq_send(reciever_queue_t.mq, (char *) &r_data, sizeof(r_data), 0)) == -1) {
+					printf("Uart_rx_thread: Message send error");
 				}
 			}
         }

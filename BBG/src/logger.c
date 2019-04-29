@@ -11,12 +11,14 @@
 #include "queue.h"
 #include "logger.h"
 
-TIVA_MSG q_recv_msg;
 
 const char *file_name = "log.txt";
 
 void *logger_thread(void *arg)
 {
+	TIVA_MSG q_recv_msg;
+
+
 	fptr = fopen(file_name, "r+");
 
 	/* Remove file if it already exists */
@@ -29,15 +31,22 @@ void *logger_thread(void *arg)
 	while(1)
 	{
 		if ((mq_receive(logger_queue_t.mq, (char *)&q_recv_msg, sizeof(q_recv_msg), 0)) == -1) {
-			perror("Message Recieve error");
-			exit(EXIT_FAILURE);
+			printf("Message Recieve error");
 		}
-	
+
+		//printf("%x \t %x \t %d\n", q_recv_msg.msg_type, q_recv_msg.log_level, q_recv_msg.sensor_data);
+
 		fptr = fopen(file_name, "a");
 
-		LOG_TO_FILE("[MSG FROM TIVA]\t [%s] [%s] Sensor data = %d\r\n", LOG_LEVEL_STRING[q_recv_msg.log_level], \
+//		if (q_recv_msg.msg_type <= 11) {
+			LOG_TO_FILE(fptr, "[MSG FROM TIVA] [%s] [%s] Sensor data = %d\r\n", LOG_LEVEL_STRING[q_recv_msg.log_level], \
 										MSG_TYPE_STRING[q_recv_msg.msg_type], \
 										q_recv_msg.sensor_data);
+/*		} else {
+			LOG_TO_FILE(fptr, "[BBG]\t [%s] [%s] Sensor data = %d\r\n", LOG_LEVEL_STRING[q_recv_msg.log_level], \
+										MSG_TYPE_STRING[q_recv_msg.msg_type], \
+										q_recv_msg.sensor_data);
+		}*/
 
 		fclose(fptr);
 	}

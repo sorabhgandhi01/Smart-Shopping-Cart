@@ -20,9 +20,7 @@
 #include "BBG_reciever.h"
 #include "queue.h"
 #include "logger.h"
-
-//#define NUM_THREAD 3
-//pthread_t thread[NUM_THREAD];
+#include "task_processor.h"
 
 void task_queue_open();
 
@@ -30,61 +28,90 @@ void handle_sigint(int sig)
 {
     uart_rx_close();
     uart_tx_close();
-    pthread_cancel(thread[0]);
-    pthread_cancel(thread[1]);
     mq_close(logger_queue_t.mq);
     mq_unlink(logger_queue_name);
+    mq_close(sender_queue_t.mq);
+    mq_unlink(sender_queue_name);
+    mq_close(reciever_queue_t.mq);
+    mq_unlink(reciever_queue_name);
+
+    fclose(fptr);
+    pthread_cancel(thread[0]);
+    pthread_cancel(thread[1]);
+    pthread_cancel(thread[2]);
+    pthread_cancel(thread[3]);
     exit(0);
 }
 
 int main()
 {
 	int rc = 0;
+	TIVA_MSG q_msg;
+
+	logger_queue_open();
+	reciever_queue_open();
 	
-	task_queue_open();
-
-	if ((rc = pthread_create(&thread[0], NULL, uart_tx_thread, NULL)) != 0)
+#if 0
+	if ((logger_queue_open() == 0) && (reciever_queue_open() == 0) && (sender_queue_open() == 0))
 	{
-		perror("uart_tx_thread create:");
-		exit(EXIT_FAILURE);
+		printf("[BBG] [DEBUG] Queue Open Start-up Test Passed Successfully\r\n");
+		/*
+		q_msg.msg_type = BBG_QUEUE_START_UP_TEST_PASSED;
+		q_msg.log_level = DEBUG;
+		if ((mq_send(logger_queue_t.mq, (char *) &q_msg, sizeof(q_msg), 0)) == -1) {
+			printf("[BBG] [ERROR] Failed to send the Queue startup test status to Logger\r\n");
+		}*/
+	} else {
+		printf("[BBG] [Error] Failed to Create Message Queue\r\n");
+		exit(0);
 	}
+#endif		
 
+	if (((rc = pthread_create(&thread[0], NULL, uart_tx_thread, NULL)) != 0))
+	{
+
+	}
 	if ((rc = pthread_create(&thread[1], NULL, uart_rx_thread, NULL)) != 0)
 	{
-		perror("uart_rx_thread create:");
-		exit(EXIT_FAILURE);
-	}
-	
-	if ((rc = pthread_create(&thread[2], NULL, logger_thread, NULL)) != 0)
-	{
-		perror("logger_thread create:");
-		exit(EXIT_FAILURE);
+
 	}
 
+	if ((rc = pthread_create(&thread[2], NULL, logger_thread, NULL)) != 0)
+	{
+	
+	}	
+	
+	if ((rc = pthread_create(&thread[3], NULL, task_processor_thread, NULL)) != 0)
+	{
+
+	}
+
+#if 0
+		printf("[BBG] [Error] Failed to Create Thread\r\n");
+		
+		/*q_msg.msg_type = BBG_TC_START_UP_TEST_FAILED;
+		q_msg.log_level = ERROR;
+		if ((mq_send(logger_queue_t.mq, (char *) &q_msg, sizeof(q_msg), 0)) == -1) {
+			printf("[BBG] [ERROR] Failed to send the Thread Creation startup test status to Logger\r\n");
+		}*/
+		
+		exit(0);
+	} else {
+		printf("[BBG] [DEBUG] Thread Creation Start-up Test Passed Successfully\r\n");
+		
+		/*q_msg.msg_type = BBG_TC_START_UP_TEST_PASSED;
+		q_msg.log_level = DEBUG;
+		if ((mq_send(logger_queue_t.mq, (char *) &q_msg, sizeof(q_msg), 0)) == -1) {
+			printf("[BBG] [ERROR] Failed to send the Thread Creation startup test status to Logger\r\n");
+		}*/
+	}
+#endif
 	pthread_join(thread[0], NULL);
 	pthread_join(thread[1], NULL);
 	pthread_join(thread[2], NULL);
+	pthread_join(thread[3], NULL);
 
 	return 0;
-}
-
-
-void task_queue_open()
-{
-    size_t size = sizeof(TIVA_MSG);
-
-    //First we need to set up the attribute structure
-    logger_queue_t.attr.mq_maxmsg = MAX_SIZE;
-    logger_queue_t.attr.mq_msgsize = size;
-    logger_queue_t.attr.mq_flags = 0;
-    logger_queue_t.attr.mq_curmsgs = 5;
-	
-    logger_queue_t.mq = mq_open(logger_queue_name, O_CREAT | O_RDWR, 0666, &(logger_queue_t.attr));
-    if (logger_queue_t.mq == (mqd_t) -1) {
-
-        perror("Queue Open Error");
-        exit(EXIT_FAILURE);
-    }
 }
 	
 	

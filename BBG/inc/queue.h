@@ -31,4 +31,9 @@ queue_handle logger_queue_t;
 queue_handle sender_queue_t;
 queue_handle reciever_queue_t;
 
+uint8_t logger_queue_open(void);
+uint8_t sender_queue_open(void);
+uint8_t reciever_queue_open(void);
+
+
 #endif
