@@ -19,17 +19,20 @@ void send_to_bbg_task(void *pvParameters)
     UARTprintf("***********SEND_TO_BBG_TASK************\n\r");
 
     TIVA_MSG task_data;
+//    TIVA_MSG dummy_data;
+//    dummy_data.msg_type = 1;
+//    dummy_data.log_level = 2;
+//    dummy_data.sensor_data = 10;
 
     while(1)
     {
         if(xQueueReceive( xQueue, &(task_data), ( TickType_t ) 10 ))
         {
-            UARTprintf("MESSAGE TYPE = %d\tDATA = %d\n\r",task_data.msg_type,task_data.sensor_data);
-           // UART_send(&task_data, sizeof(task_data));
-           // vTaskDelay(500 / portTICK_PERIOD_MS);
+            UARTprintf("MESSAGE TYPE = %d\tDATA = %d\n\r", task_data.msg_type, task_data.sensor_data);
+            UART_send(&task_data, sizeof(task_data));
+            vTaskDelay(500 / portTICK_PERIOD_MS);
         }
 
     }
-
 }
 

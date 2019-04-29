@@ -4,25 +4,7 @@
  *  Created on: 19-Apr-2019
  *      Author: Sorabh
  */
-#include <my_uart.h>
-#include <stdbool.h>
-#include <stdint.h>
 
-#include "driverlib/sysctl.h"
-#include "driverlib/debug.h"
-#include "driverlib/rom.h"
-#include "driverlib/rom_map.h"
-#include "driverlib/sysctl.h"
-#include "driverlib/pin_map.h"
-#include "driverlib/gpio.h"
-#include "driverlib/interrupt.h"
-#include "driverlib/uart.h"
-
-#include "inc/hw_memmap.h"
-#include "inc/hw_types.h"
-#include "inc/hw_ints.h"
-
-#include "utils/uartstdio.h"
 
 #include "my_uart.h"
 #include "main.h"

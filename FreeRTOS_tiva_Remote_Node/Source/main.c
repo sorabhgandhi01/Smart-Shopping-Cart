@@ -9,7 +9,6 @@
 /****************************************************************************
  * HEADER FILES                                                             *
  ****************************************************************************/
-#include <motor_control_task.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include "main.h"
@@ -39,10 +38,12 @@
 /****************************************************************************
  * USER DEFINED HEADER FILES                                                *
  ****************************************************************************/
-#include "gesture_sensor_task.h"
-#include "push_button_task.h"
-#include "ultrasonic_sensor_task.h"
-#include "send_to_bbg_task.h"
+#include "../inc/sensor_task/gesture_sensor_task.h"
+#include "../inc/sensor_task/push_button_task.h"
+#include "../inc/sensor_task/ultrasonic_sensor_task.h"
+#include "../inc/communication_task/send_to_bbg_task.h"
+#include "../inc/communication_task/recv_from_bbg.h"
+#include "../inc/Actuator_task/motor_control_task.h"
 
 /****************************************************************************
  * GLOBAL VARIABLES                                                         *
@@ -73,7 +74,10 @@ int main(void)
     PinoutSet(false, false);
 
     /* Initialize I2C */
-    I2C_Init();
+  //  I2C_Init();
+
+    init_RX_serial();
+    init_TX_serial();
 
     /* Set up the UART which is connected to the virtual COM port */
     UARTStdioConfig(0, 115200, SYSTEM_CLOCK);
@@ -88,7 +92,6 @@ int main(void)
     {
        UARTprintf("\r\nQueue was not created!");
     }
-
 
     /* Create InterBoard [Send Message] Task */
     xTaskCreate(send_to_bbg_task, (const portCHAR *)"SENDER TASK",
@@ -131,13 +134,13 @@ int main(void)
     xTaskCreate(vUltraSonic_Task, (const portCHAR *)"Distance",
                 configMINIMAL_STACK_SIZE, NULL, 1, &Ultrasonic_Task);
 
-    /* Create Gesture Sensor Task */
-    xTaskCreate(vGesture_Sensor_Task, (const portCHAR *)"Gesture",
-                configMINIMAL_STACK_SIZE, NULL, 1, &Gesture_Task);
+//    /* Create Gesture Sensor Task */
+//    xTaskCreate(vGesture_Sensor_Task, (const portCHAR *)"Gesture",
+//                configMINIMAL_STACK_SIZE, NULL, 1, &Gesture_Task);
 
     /* Create InterBoard [Receive Message] Task */
-//    xTaskCreate(recv_from_bbg_task, (const portCHAR *)"RECEIVE TASK",
-//                configMINIMAL_STACK_SIZE, NULL, 1, NULL);
+    xTaskCreate(recv_from_bbg_task, (const portCHAR *)"RECEIVE TASK",
+                configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 
     vTaskStartScheduler();
     return 0;

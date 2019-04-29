@@ -59,7 +59,7 @@ void vGesture_Sensor_Task(void *pvParameters)
         {
             if(isGestureAvailable())
             {
-                UARTprintf("Reading Gesture\n\r");
+                //UARTprintf("Reading Gesture\n\r");
                 switch(readGesture())
                 {
                 case DIR_UP:
