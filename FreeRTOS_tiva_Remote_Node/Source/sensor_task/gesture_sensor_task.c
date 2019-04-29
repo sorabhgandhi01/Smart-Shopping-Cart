@@ -29,7 +29,7 @@ void vGesture_Sensor_Task(void *pvParameters)
         UARTprintf("Something went wrong during APDS-9960 init!\n\r");
         //Kill Gesture Recognition Task
         UARTprintf("Gesture Task Killed\n\r");
-        vTaskDelete(Gesture_Task);
+        //vTaskDelete(Gesture_Task);
     }
 
     /* Enable Gesture Sensor */
@@ -50,16 +50,16 @@ void vGesture_Sensor_Task(void *pvParameters)
 
     for(;;)
     {
-        if(SparkFun_APDS9960_Available() == -1)
-        {
-            UARTprintf("Gesture Sensor Down\n\rGesture Task Killed\n\r");
-            vTaskDelete(Gesture_Task);
-        }
-        else
-        {
+//        if(SparkFun_APDS9960_Available() == -1)
+//        {
+//            UARTprintf("Gesture Sensor Down\n\rGesture Task Killed\n\r");
+//            //vTaskDelete(Gesture_Task);
+//        }
+//        else
+//        {
             if(isGestureAvailable())
             {
-                //UARTprintf("Reading Gesture\n\r");
+                UARTprintf("Reading Gesture\n\r");
                 switch(readGesture())
                 {
                 case DIR_UP:
@@ -120,7 +120,7 @@ void vGesture_Sensor_Task(void *pvParameters)
 
         SysCtlDelay(1000000);
 
-        }
+        //}
     }
 
 }

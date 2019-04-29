@@ -10,6 +10,7 @@
 #include "helper.h"
 #include "semphr.h"
 #include "my_uart.h"
+#include "task.h"
 
 extern QueueHandle_t xQueue;
 extern SemaphoreHandle_t xMutex;
