@@ -5,7 +5,7 @@
  *      Author: omrah
  */
 
-#include "I2C.h"
+#include "../../inc/comm_wrappers/I2C.h"
 
 
 /* Exported Global variables */

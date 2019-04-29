@@ -46,6 +46,12 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/FreeRTOS/portable/CCS/ARM_CM4F}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}/driverlib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}/inc/Actuator_task&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}/inc/comm_wrappers&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}/inc/communication_task&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}/inc/sensor_driver&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}/inc/sensor_task&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}/inc/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}/FreeRTOS/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}/FreeRTOS/portable/CCS/ARM_CM4F&quot;"/>
 								</option>
@@ -172,4 +178,5 @@
 			<content-type-mapping configuration="" content-type="org.eclipse.cdt.core.cxxSource" language="com.ti.ccstudio.core.TIGPPLanguage"/>
 		</project-mappings>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 </cproject>

@@ -78,9 +78,6 @@ void onButtonUp(void)
  ****************************************************************************/
 void forward_button_pressed()
 {
-    // PJ0 was interrupt cause
-    //UARTprintf("PJ0 Button Down\n");
-    //button_status = FORWARD_BUTTON_PRESSED;
 
     if(DEGRADED_MODE)
     {
@@ -89,10 +86,9 @@ void forward_button_pressed()
     else
     {
         Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
-        Button_Status.data.pb_data = FORWARD_BUTTON_PRESSED;
+        Button_Status.sensor_data = FORWARD_BUTTON_PRESSED;
+        Button_Status.log_level = INFO;
 
-//        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
-//        task_data.TaskData = 11;
         if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
         {
             UARTprintf("Failed to post the message, even after 10 ticks\n\r");
@@ -100,6 +96,7 @@ void forward_button_pressed()
 
 
     }
+
     GPIOIntRegister(GPIO_PORTJ_BASE, onButtonUp);           // Register our handler function for port J
     GPIOIntTypeSet(GPIO_PORTJ_BASE, GPIO_PIN_0,
                    GPIO_RISING_EDGE);                       // Configure PJ0 for rising edge trigger
@@ -111,8 +108,6 @@ void forward_button_pressed()
  ****************************************************************************/
 void backward_button_pressed()
 {
-    // PJ1 was interrupt cause
-    //UARTprintf("PJ1 Button Down\n");
     button_status = BACKWARD_BUTTON_PRESSED;
 
     if(DEGRADED_MODE)
@@ -122,10 +117,9 @@ void backward_button_pressed()
     else
     {
         Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
-        Button_Status.data.pb_data = BACKWARD_BUTTON_PRESSED;
+        Button_Status.sensor_data = BACKWARD_BUTTON_PRESSED;
+        Button_Status.log_level = INFO;
 
-//        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
-//        task_data.TaskData = 11;
         if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
         {
             UARTprintf("Failed to post the message, even after 10 ticks\n\r");
@@ -145,8 +139,6 @@ void backward_button_pressed()
  ****************************************************************************/
 void right_button_pressed()
 {
-    // PL0 was interrupt cause
-    //UARTprintf("PL0 Button Down\n");
     button_status = RIGHT_BUTTON_PRESSED;
 
     if(DEGRADED_MODE)
@@ -156,10 +148,9 @@ void right_button_pressed()
     else
     {
         Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
-        Button_Status.data.pb_data = RIGHT_BUTTON_PRESSED;
+        Button_Status.sensor_data = RIGHT_BUTTON_PRESSED;
+        Button_Status.log_level = INFO;
 
-//        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
-//        task_data.TaskData = 11;
         if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
         {
             UARTprintf("Failed to post the message, even after 10 ticks\n\r");
@@ -179,8 +170,6 @@ void right_button_pressed()
  ****************************************************************************/
 void left_button_pressed()
 {
-    // PL1 was interrupt cause
-    //UARTprintf("PL1 Button Down\n");
     button_status = LEFT_BUTTON_PRESSED;
 
     if(DEGRADED_MODE)
@@ -190,10 +179,9 @@ void left_button_pressed()
     else
     {
         Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
-        Button_Status.data.pb_data = LEFT_BUTTON_PRESSED;
+        Button_Status.sensor_data = LEFT_BUTTON_PRESSED;
+        Button_Status.log_level = INFO;
 
-//        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
-//        task_data.TaskData = 11;
         if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
         {
             UARTprintf("Failed to post the message, even after 10 ticks\n\r");
@@ -214,8 +202,6 @@ void left_button_pressed()
  ****************************************************************************/
 void forward_button_released()
 {
-    // PJ0 was interrupt cause
-    //UARTprintf("PJ0 Button Up\n");
     button_status = FORWARD_BUTTON_RELEASED;
 
     if(DEGRADED_MODE)
@@ -225,10 +211,9 @@ void forward_button_released()
     else
     {
         Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
-        Button_Status.data.pb_data = FORWARD_BUTTON_RELEASED;
+        Button_Status.sensor_data = FORWARD_BUTTON_RELEASED;
+        Button_Status.log_level = INFO;
 
-//        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
-//        task_data.TaskData = 11;
         if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
         {
             UARTprintf("Failed to post the message, even after 10 ticks\n\r");
@@ -247,8 +232,6 @@ void forward_button_released()
  ****************************************************************************/
 void backward_button_released()
 {
-    // PJ1 was interrupt cause
-    //UARTprintf("PJ1 Button Up\n");
     button_status = BACKWARD_BUTTON_RELEASED;
 
     if(DEGRADED_MODE)
@@ -258,10 +241,9 @@ void backward_button_released()
     else
     {
         Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
-        Button_Status.data.pb_data = BACKWARD_BUTTON_RELEASED;
+        Button_Status.sensor_data = BACKWARD_BUTTON_RELEASED;
+        Button_Status.log_level = INFO;
 
-//        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
-//        task_data.TaskData = 11;
         if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
         {
             UARTprintf("Failed to post the message, even after 10 ticks\n\r");
@@ -291,7 +273,8 @@ void right_button_released()
     else
     {
         Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
-        Button_Status.data.pb_data = RIGHT_BUTTON_RELEASED;
+        Button_Status.sensor_data = RIGHT_BUTTON_RELEASED;
+        Button_Status.log_level = INFO;
 
 //        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
 //        task_data.TaskData = 11;
@@ -324,10 +307,9 @@ void left_button_released()
     else
     {
         Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
-        Button_Status.data.pb_data = LEFT_BUTTON_RELEASED;
+        Button_Status.sensor_data = LEFT_BUTTON_RELEASED;
+        Button_Status.log_level = INFO;
 
-//        strcpy(task_data.msgID , "MOTOR DRIVER:[F]");
-//        task_data.TaskData = 11;
         if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
         {
             UARTprintf("Failed to post the message, even after 10 ticks\n\r");

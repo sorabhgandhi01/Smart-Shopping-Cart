@@ -1189,3 +1189,23 @@ void detachInterrupt()
 //
 //    return i;
 //}
+
+
+int SparkFun_APDS9960_Available()
+{
+    uint8_t id;
+
+    /* Read ID register and check against known values for APDS-9960 */
+    if(!I2C_ReadDataByte(APDS9960_ID,&id))
+    {
+        UARTprintf("ID REGISTER READ FAILED\n\r");
+        return 0;
+    }
+
+    if(!(id == APDS9960_ID_1 || id == APDS9960_ID_2))
+    {
+        UARTprintf("ID!= APDS9960_ID_1 or ID!= APDS9960_ID_2\n\r");
+        return -1;
+    }
+
+}

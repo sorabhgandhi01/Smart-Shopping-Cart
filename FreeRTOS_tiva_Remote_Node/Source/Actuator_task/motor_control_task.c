@@ -28,7 +28,6 @@ void vMotor_Driver_Task(void *pvParameters)
 /* Degraded Motor Operation Task */
 void vDegraded_Motor_Operation_Task(void *pvParameters)
 {
-    TaskData_t task_data;
     for(;;)
     {
         xSemaphoreTake(xMutex, ( TickType_t )10);

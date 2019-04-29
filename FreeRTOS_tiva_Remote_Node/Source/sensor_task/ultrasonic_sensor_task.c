@@ -57,15 +57,9 @@ void vUltraSonic_Task(void *pvParameters)
             distance = (((float)(1.0/(output_clock_rate_hz/1000000))*time));
             distance = distance/58;
 
-//            strcpy(ultrasonic_data.msgID , "ULTRASONIC");
-//            ultrasonic_data.TaskData = distance;
-//            if(xQueueSend(xQueue, (void *)&ultrasonic_data,(TickType_t)10) != pdPASS)
-//            {
-//                UARTprintf("Failed to post the message, even after 10 ticks\n\r");
-//            }
-
             ultrasonic_sensor_data.msg_type = DISTANCE_SENSOR_DATA;
-            ultrasonic_sensor_data.data.distance = distance;
+            ultrasonic_sensor_data.sensor_data = (uint32_t)distance;
+            ultrasonic_sensor_data.log_level = INFO;
 
             if(xQueueSend(xQueue, (void *)&ultrasonic_sensor_data,(TickType_t)10) != pdPASS)
             {

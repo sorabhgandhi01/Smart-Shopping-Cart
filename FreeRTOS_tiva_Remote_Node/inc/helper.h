@@ -73,13 +73,8 @@ typedef enum LOG_LEVELS_T
 typedef struct TIVA_MSG_T
 {
     uint8_t msg_type;
-    union TIVA_DATA
-    {
-        uint8_t gesture_data;
-        uint8_t pb_data;
-        int distance;
-        uint8_t no_data;
-    }data;
+    uint8_t log_level;
+    uint32_t sensor_data;
 }TIVA_MSG;
 
 const static char *const LOG_LEVEL_STRING[NUM_LOG_LEVELS] =
@@ -106,12 +101,5 @@ const static char *const MSG_TYPE_STRING[NUM_MSG_TYPE] =
     "GESTURE SENSOR DATA",
     "RFID SENSOR DATA",
 };
-
-typedef struct SENSOR_DATA_T
-{
-    uint8_t msg_type;
-    uint8_t log_level;
-    float sensor_data;
-}SENSOR_DATA;
 
 #endif /* HELPER_H_ */
