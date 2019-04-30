@@ -66,7 +66,10 @@ void *uart_rx_thread(void *arg)
 
 
 			if (status > 0) {
-				printf("REC %d \t %d \t %d\n", r_data.msg_type, r_data.log_level, r_data.sensor_data);
+				//printf("REC %d \t %d \t %d\n", r_data.msg_type, r_data.log_level, r_data.sensor_data);
+				printf("MSG FROM TIVA] [%s] [%s] data = %d\r\n", LOG_LEVEL_STRING[r_data.log_level], \
+                                                                                MSG_TYPE_STRING[r_data.msg_type], \
+                                                                                r_data.sensor_data);
 
 				if (r_data.msg_type == HEART_BEAT) {
 					current_count++;

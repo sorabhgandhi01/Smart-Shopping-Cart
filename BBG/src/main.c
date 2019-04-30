@@ -57,6 +57,8 @@ int main()
 	onboardLED1(0);
 	onboardLED2(0);
 	onboardLED3(0);
+
+	printf("[BBG] [DEBUG] Queue Open Start-up Test Passed Successfully\r\n");
 	
 #if 0
 	if ((logger_queue_open() == 0) && (reciever_queue_open() == 0) && (sender_queue_open() == 0))
@@ -76,22 +78,24 @@ int main()
 
 	if (((rc = pthread_create(&thread[0], NULL, uart_tx_thread, NULL)) != 0))
 	{
-
+		 printf("[BBG] [Error] Failed to Create Thread\r\n");
 	}
 	if ((rc = pthread_create(&thread[1], NULL, uart_rx_thread, NULL)) != 0)
 	{
-
+		 printf("[BBG] [Error] Failed to Create Thread\r\n");
 	}
 
 	if ((rc = pthread_create(&thread[2], NULL, logger_thread, NULL)) != 0)
 	{
-	
+		 printf("[BBG] [Error] Failed to Create Thread\r\n");
 	}	
 	
 	if ((rc = pthread_create(&thread[3], NULL, task_processor_thread, NULL)) != 0)
 	{
-
+		 printf("[BBG] [Error] Failed to Create Thread\r\n");
 	}
+
+	printf("[BBG] [DEBUG] Thread Creation Start-up Test Passed Successfully\r\n");
 
 #if 0
 		printf("[BBG] [Error] Failed to Create Thread\r\n");
