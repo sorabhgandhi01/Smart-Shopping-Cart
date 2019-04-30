@@ -78,7 +78,7 @@ void vGesture_Sensor_Task(void *pvParameters)
                 UARTprintf("Failed to post the message, even after 10 ticks\n\r");
             }
             xSemaphoreGive(xMutex);
-
+            display_lcd_row1("Degraded mode");
             vTaskDelete(Gesture_Task);
         }
         else
