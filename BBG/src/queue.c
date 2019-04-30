@@ -34,7 +34,7 @@ uint8_t sender_queue_open(void)
     sender_queue_t.attr.mq_flags = 0;
     sender_queue_t.attr.mq_curmsgs = 5;
 	
-    sender_queue_t.mq = mq_open(sender_queue_name, O_CREAT | O_RDWR, 0666, &(sender_queue_t.attr));
+    sender_queue_t.mq = mq_open(sender_queue_name, O_CREAT | O_RDWR | O_NONBLOCK, 0666, &(sender_queue_t.attr));
     if (sender_queue_t.mq == (mqd_t) -1) {
 
         printf("Sender Queue Open Error");
