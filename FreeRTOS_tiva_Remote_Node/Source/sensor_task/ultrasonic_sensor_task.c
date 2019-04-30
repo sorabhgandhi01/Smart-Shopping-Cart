@@ -9,7 +9,7 @@
  * USER DEFINED HEADER FILES                                                *
  ****************************************************************************/
 #include "ultrasonic_sensor_task.h"
-
+#include "Lcd_display.h"
 
 /****************************************************************************
  * EXPORTED GLOBAL VARIABLES                                                *
@@ -21,7 +21,6 @@ extern SemaphoreHandle_t xMutex;
 extern QueueHandle_t xQueue;
 
 extern TaskHandle_t Ultrasonic_Task;
-
 
 /****************************************************************************
  * GLOBAL VARIABLES                                                         *
@@ -37,10 +36,10 @@ uint32_t time;
  ****************************************************************************/
 void vUltraSonic_Task(void *pvParameters)
 {
+
     UARTprintf("UltraSonic Sensor Task\n\r");
     int dead = 0;
     ultrasonic_sensor_init();
-//    TaskData_t ultrasonic_data;
     TIVA_MSG ultrasonic_sensor_data;
 
     while(1)
@@ -78,6 +77,14 @@ void vUltraSonic_Task(void *pvParameters)
 
         if (dead > 1) {
             UARTprintf("Distance Sensor Inactive\n");
+
+        if(xQueueSend(xQueue, (void *)&ultrasonic_sensor_data,(TickType_t)10) != pdPASS)
+        {
+            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+        }
+
+
+
             vTaskDelay(1000/portTICK_PERIOD_MS);
         }
 
