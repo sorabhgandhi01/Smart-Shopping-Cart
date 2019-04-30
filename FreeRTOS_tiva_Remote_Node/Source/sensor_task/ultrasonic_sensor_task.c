@@ -22,7 +22,6 @@ extern QueueHandle_t xQueue;
 
 extern TaskHandle_t Ultrasonic_Task;
 
-
 /****************************************************************************
  * GLOBAL VARIABLES                                                         *
  ****************************************************************************/
@@ -78,6 +77,14 @@ void vUltraSonic_Task(void *pvParameters)
 
         if (dead > 1) {
             UARTprintf("Distance Sensor Inactive\n");
+
+        if(xQueueSend(xQueue, (void *)&ultrasonic_sensor_data,(TickType_t)10) != pdPASS)
+        {
+            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+        }
+
+
+
             vTaskDelay(1000/portTICK_PERIOD_MS);
         }
 

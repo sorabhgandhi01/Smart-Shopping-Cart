@@ -103,7 +103,6 @@ int main(void)
     xTaskCreate(send_to_bbg_task, (const portCHAR *)"SENDER TASK",
                 configMINIMAL_STACK_SIZE, NULL, 1, NULL);
 
-
     /* Create Degraded Motor Operation Task */
     xTaskCreate(vDegraded_Motor_Operation_Task, (const portCHAR *)"DEGRADED MOTOR OPERATION TASK",
                 configMINIMAL_STACK_SIZE, NULL, 1, &xAlert);
