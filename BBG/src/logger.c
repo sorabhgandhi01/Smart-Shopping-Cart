@@ -46,7 +46,7 @@ void *logger_thread(void *arg)
 			LOG_TO_FILE(fptr, "[MSG FROM TIVA] [%s] [%s] Sensor data = %d\r\n", LOG_LEVEL_STRING[q_recv_msg.log_level], \
 										MSG_TYPE_STRING[q_recv_msg.msg_type], \
 										q_recv_msg.sensor_data);
-		} else {
+		} else if (q_recv_msg.msg_type < 23) {
 			LOG_TO_FILE(fptr, "[BBG]\t\t [%s] [%s]\r\n", LOG_LEVEL_STRING[q_recv_msg.log_level], \
 										MSG_TYPE_STRING[q_recv_msg.msg_type]);
 		}

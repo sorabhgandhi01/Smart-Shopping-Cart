@@ -66,7 +66,7 @@ void *uart_rx_thread(void *arg)
 
 
 			if (status > 0) {
-				printf("REC %x \t %x \t %d\n", r_data.msg_type, r_data.log_level, r_data.sensor_data);
+				printf("REC %d \t %d \t %d\n", r_data.msg_type, r_data.log_level, r_data.sensor_data);
 
 				if (r_data.msg_type == HEART_BEAT) {
 					current_count++;

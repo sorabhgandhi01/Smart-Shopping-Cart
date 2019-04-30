@@ -48,16 +48,19 @@ void *uart_tx_thread(void *arg)
 			FLAG_HB_SEND = 0;
 		}
 		
-		if ((mq_receive(sender_queue_t.mq, (char *)&r_msg, sizeof(r_msg), 0)) == -1) {
-			printf("Message Recieve error");
-		}
+#if 0
+		mq_receive(sender_queue_t.mq, (char *)&r_msg, sizeof(r_msg), 0);
+		
 
 		if (r_msg.msg_type > RFID_SENSOR_DATA)
 		{
 			printf("SM = %d\r\n", r_msg.msg_type);
 			uart_write(&(r_msg.msg_type), sizeof(r_msg.msg_type));
 		}
+		memset(&r_msg, sizeof(r_msg), 0);
+#endif
 	}
+	
 
 	pthread_cancel(thread[0]);
 }
