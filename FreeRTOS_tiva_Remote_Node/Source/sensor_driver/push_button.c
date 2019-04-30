@@ -10,8 +10,10 @@
  * USER DEFINED HEADER FILES                                                *
  ****************************************************************************/
 #include "push_button.h"
+#include <stdbool.h>
 
-#define DEGRADED_MODE 0
+extern bool DEGRADED_MODE;
+
 
 /****************************************************************************
  * GLOBAL VARIABLES                                                         *
@@ -78,17 +80,17 @@ void onButtonUp(void)
  ****************************************************************************/
 void forward_button_pressed()
 {
-
+    UARTprintf("FORWARD  DEGRADED MODE -> %d\n\r",DEGRADED_MODE);
     if(DEGRADED_MODE)
     {
-        xTaskNotifyGive(xAlert);
+        xTaskNotifyGive(xForward_Motion);
     }
     else
     {
         Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
         Button_Status.sensor_data = FORWARD_BUTTON_PRESSED;
         Button_Status.log_level = INFO;
-
+        UARTprintf("Cart->FORWARD\n\r");
         if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
         {
             UARTprintf("Failed to post the message, even after 10 ticks\n\r");
@@ -108,18 +110,19 @@ void forward_button_pressed()
  ****************************************************************************/
 void backward_button_pressed()
 {
+    UARTprintf("BACKWARD  DEGRADED MODE -> %d\n\r",DEGRADED_MODE);
     button_status = BACKWARD_BUTTON_PRESSED;
 
     if(DEGRADED_MODE)
     {
-        xTaskNotifyGive(xAlert);
+        xTaskNotifyGive(xBackward_Motion);
     }
     else
     {
         Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
         Button_Status.sensor_data = BACKWARD_BUTTON_PRESSED;
         Button_Status.log_level = INFO;
-
+        UARTprintf("Cart->BACKWARD\n\r");
         if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
         {
             UARTprintf("Failed to post the message, even after 10 ticks\n\r");
@@ -139,18 +142,19 @@ void backward_button_pressed()
  ****************************************************************************/
 void right_button_pressed()
 {
+    UARTprintf("RIGHT  DEGRADED MODE -> %d\n\r",DEGRADED_MODE);
     button_status = RIGHT_BUTTON_PRESSED;
 
     if(DEGRADED_MODE)
     {
-        xTaskNotifyGive(xAlert);
+        xTaskNotifyGive(xRight_Motion);
     }
     else
     {
         Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
         Button_Status.sensor_data = RIGHT_BUTTON_PRESSED;
         Button_Status.log_level = INFO;
-
+        UARTprintf("Cart->RIGHT\n\r");
         if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
         {
             UARTprintf("Failed to post the message, even after 10 ticks\n\r");
@@ -170,18 +174,19 @@ void right_button_pressed()
  ****************************************************************************/
 void left_button_pressed()
 {
+    UARTprintf("LEFT  DEGRADED MODE -> %d\n\r",DEGRADED_MODE);
     button_status = LEFT_BUTTON_PRESSED;
 
     if(DEGRADED_MODE)
     {
-        xTaskNotifyGive(xAlert);
+        xTaskNotifyGive(xLeft_Motion);
     }
     else
     {
         Button_Status.msg_type = PUSH_BUTTON_SENSOR_DATA;
         Button_Status.sensor_data = LEFT_BUTTON_PRESSED;
         Button_Status.log_level = INFO;
-
+        UARTprintf("Cart->LEFT\n\r");
         if(xQueueSend(xQueue, (void *)&Button_Status,(TickType_t)10) != pdPASS)
         {
             UARTprintf("Failed to post the message, even after 10 ticks\n\r");
@@ -206,7 +211,7 @@ void forward_button_released()
 
     if(DEGRADED_MODE)
     {
-        xTaskNotifyGive(xAlert);
+        xTaskNotifyGive(xStop_Motion);
     }
     else
     {
@@ -236,7 +241,7 @@ void backward_button_released()
 
     if(DEGRADED_MODE)
     {
-        xTaskNotifyGive(xAlert);
+        xTaskNotifyGive(xStop_Motion);
     }
     else
     {
@@ -268,7 +273,7 @@ void right_button_released()
 
     if(DEGRADED_MODE)
     {
-        xTaskNotifyGive(xAlert);
+        xTaskNotifyGive(xStop_Motion);
     }
     else
     {
@@ -302,7 +307,7 @@ void left_button_released()
 
     if(DEGRADED_MODE)
     {
-        xTaskNotifyGive(xAlert);
+        xTaskNotifyGive(xStop_Motion);
     }
     else
     {

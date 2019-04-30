@@ -109,38 +109,25 @@ bool I2C_ReadDataByte(uint8_t reg, uint8_t *val)
     return true;
 }
 
-int I2C_ReadDataBlock(uint8_t reg, uint8_t *val, unsigned int len)
+int I2C_ReadDataBlock(uint8_t reg, uint8_t *val, unsigned int length)
 {
     unsigned char i = 0, j=0;
-    while(i<len)
+    while(i<length)
     {
         for(j=0; j<4; j++)
         {
-                // Indicate which register we want to read from
-                I2CMasterSlaveAddrSet(I2C0_BASE, APDS9960_I2C_ADDRESS, false);
-                //
-                // Place the character to be sent in the data register
-                //
-                I2CMasterDataPut(I2C0_BASE, (0xFC+j));
-                //
-                // Initiate send of character from Master to Slave
-                //
-                I2CMasterControl(I2C0_BASE, I2C_MASTER_CMD_SINGLE_SEND);
-                //
-                // Delay until transmission completes
-                //
-                while(I2CMasterBusy(I2C0_BASE));
+        I2CMasterSlaveAddrSet(I2C0_BASE, APDS9960_I2C_ADDRESS, false);
+        I2CMasterDataPut(I2C0_BASE, (0xFC+j));
+        I2CMasterControl(I2C0_BASE, I2C_MASTER_CMD_SINGLE_SEND);
+        while(I2CMasterBusy(I2C0_BASE));
 
-                I2CMasterSlaveAddrSet(I2C0_BASE, APDS9960_I2C_ADDRESS, true);
+        I2CMasterSlaveAddrSet(I2C0_BASE, APDS9960_I2C_ADDRESS, true);
 
-                I2CMasterControl(I2C0_BASE, I2C_MASTER_CMD_SINGLE_RECEIVE);
-                //
-                // Delay until transmission completes
-                //
-                while(I2CMasterBusy(I2C0_BASE));
-                val[i] = (uint8_t)I2CMasterDataGet(I2C0_BASE);
-                while(I2CMasterBusy(I2C0_BASE));
-                i++;
+        I2CMasterControl(I2C0_BASE, I2C_MASTER_CMD_SINGLE_RECEIVE);
+        while(I2CMasterBusy(I2C0_BASE));
+        val[i] = (uint8_t)I2CMasterDataGet(I2C0_BASE);
+        while(I2CMasterBusy(I2C0_BASE));
+        i++;
         }
         j=0;
     }

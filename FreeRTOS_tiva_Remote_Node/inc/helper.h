@@ -63,14 +63,14 @@ typedef enum PB_DATA_T
 
 typedef enum GS_DATA_T
 {
-    GS_ERROR = -1,
+    GS_ERROR = 0,
     GS_FORWARD,
     GS_BACKWARD,
     GS_RIGHT,
     GS_LEFT,
+    GS_NO_GESTURE,
     GS_NEAR,
     GS_FAR,
-    GS_NO_GESTURE,
 }GS_DATA;
 
 typedef enum LOG_LEVELS_T
