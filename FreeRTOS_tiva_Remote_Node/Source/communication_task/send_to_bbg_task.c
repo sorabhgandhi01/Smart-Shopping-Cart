@@ -12,6 +12,7 @@
 #include "my_uart.h"
 #include "timers.h"
 #include "task.h"
+#include "Lcd_display.h"
 
 extern QueueHandle_t xQueue;
 extern SemaphoreHandle_t xMutex;
@@ -62,7 +63,7 @@ void send_to_bbg_task(void *pvParameters)
 
         if(xQueueReceive( xQueue, &(task_data), ( TickType_t ) 10 ))
         {
-            display_lcd_row1("100");
+//            display_lcd_row1("100");
 
             UARTprintf("MESSAGE TYPE = %d\tDATA = %d\n\r", task_data.msg_type, task_data.sensor_data);
             UART_send(&task_data, sizeof(task_data));

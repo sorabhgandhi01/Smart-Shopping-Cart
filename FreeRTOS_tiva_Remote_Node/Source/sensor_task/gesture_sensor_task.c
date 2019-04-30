@@ -24,10 +24,6 @@ void vGesture_Sensor_Task(void *pvParameters)
 {
     UARTprintf("*****************GESTURE SENSOR TASK*****************\n\r");
 
-//    display_lcd_row1("Ges Task");
-//    display_lcd_row3("PB Task");
-//    SysCtlDelay(100000000);
-
     /* Initialize Gesture Sensor Task */
     if(SparkFun_APDS9960_Init()){
         UARTprintf("APDS-9960 initialization complete!\n\r");

@@ -8,11 +8,6 @@
 
 #include "Lcd_display.h"
 
-//#define ROW1 0x80
-//#define ROW2 0XC0
-//#define ROW3 0X94
-//#define ROW4 0XD4
-
 void Initialize_LCD(void);
 void string_to_lcd(unsigned char *s);
 void LCD_write(unsigned char,unsigned int);

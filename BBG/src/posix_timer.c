@@ -1,4 +1,5 @@
 #include "posix_timer.h"
+#include "BBG_reciever.h"
 
 int set_timer(timer_t *timer_id, void (*handler)(union sigval))
 {
@@ -56,5 +57,6 @@ void heart_beat_send_timer_handler(union sigval val)
 void heart_beat_recv_timer_handler(union sigval val)
 {
 	FLAG_HB_RECV = 1;
+	
 	start_timer(hb_recv_id, HB_FREQ);
 }
