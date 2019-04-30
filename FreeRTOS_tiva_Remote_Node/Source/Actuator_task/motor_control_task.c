@@ -96,31 +96,44 @@ void vDegraded_Motor_Operation_Task(void *pvParameters)
 
 void vForward_Motion_Task(void *pvParameters)
 {
-    ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
-    FORWARD();
 
+    ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
+    UARTprintf("MOTOR->FORWARD\n\r");
+    FORWARD();
+    vTaskDelay(2000/portTICK_PERIOD_MS);
+    STOP();
 }
 void vBackward_Motion_Task(void *pvParameters)
 {
     ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
+    UARTprintf("MOTOR->BACKWARD\n\r");
     BACKWARD();
+    vTaskDelay(2000/portTICK_PERIOD_MS);
+    STOP();
 
 }
 void vLeft_Motion_Task(void *pvParameters)
 {
+
     ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
+    UARTprintf("MOTOR->LEFT\n\r");
     LEFT();
+    vTaskDelay(2000/portTICK_PERIOD_MS);
+    STOP();
 
 }
 void vRight_Motion_Task(void *pvParameters)
 {
     ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
+    UARTprintf("MOTOR->RIGHT\n\r");
     RIGHT();
+    vTaskDelay(2000/portTICK_PERIOD_MS);
+    STOP();
 
 }
 void vStop_Motion_Task(void *pvParameters)
 {
-    ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
+     ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
+     UARTprintf("MOTOR->STOP\n\r");
     STOP();
-
 }

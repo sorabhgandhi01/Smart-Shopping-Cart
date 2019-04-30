@@ -7,7 +7,7 @@
 #include "driverlib/gpio.h"
 #include "driverlib/inc/hw_memmap.h"
 #include "sysctl.h"
-#include "I2C.h"
+#include "../inc/comm_wrappers/I2C.h"
 
 
 /* APDS-9960 I2C Address */

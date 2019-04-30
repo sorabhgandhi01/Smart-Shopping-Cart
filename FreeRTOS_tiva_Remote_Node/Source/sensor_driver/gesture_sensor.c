@@ -1,3 +1,6 @@
+/*Reference For this code :https://github.com/sparkfun/APDS-9960_RGB_and_Gesture_Sensor/blob/V_H1.0_L1.4.2/Libraries/Arduino/src/SparkFun_APDS9960.cpp
+ * */
+
 #include "gesture_sensor.h"
 
 /* Gesture Sensor Initialization */

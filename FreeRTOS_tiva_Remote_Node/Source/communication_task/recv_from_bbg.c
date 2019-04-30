@@ -5,6 +5,7 @@
  *      Author: Sorabh
  */
 
+#include <stdbool.h>
 #include "recv_from_bbg.h"
 #include "FreeRTOS.h"
 #include "queue.h"
@@ -13,6 +14,8 @@
 #include "my_uart.h"
 #include "timers.h"
 #include "task.h"
+#include "motor_control.h"
+#include "Lcd_display.h"
 
 void vRecv_from_bbg_TimerCallback( TimerHandle_t xTimer );
 
@@ -24,18 +27,42 @@ extern TaskHandle_t xStop_Motion;
 extern TaskHandle_t xRight_Motion;
 extern TaskHandle_t xForward_Motion;
 extern TaskHandle_t xBackward_Motion;
+extern SemaphoreHandle_t xMutex;
+extern QueueHandle_t xQueue;
 
+
+bool DEGRADED_MODE;
+TIVA_MSG degraded_mode;
 
 void vRecv_from_bbg_TimerCallback( TimerHandle_t xTimer )
  {
     if(current_count <= previous_count)
     {
+        DEGRADED_MODE = true;
+        UARTprintf("DEGRADED MODE -> %d\n\r",DEGRADED_MODE);
         UARTprintf("Error!!\n\r");
+        display_lcd_row1("Degraded mode");
+        SysCtlDelay(100);
+
+
+        degraded_mode.msg_type = REMOTE_NODE_OFF;
+        degraded_mode.log_level = ERROR_T;
+        xSemaphoreTake(xMutex, ( TickType_t )10);
+        if(xQueueSend(xQueue, (void *)&degraded_mode,(TickType_t)10) != pdPASS)
+        {
+            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+        }
+        xSemaphoreGive(xMutex);
 
     }
     else
     {
+        DEGRADED_MODE = false;
+        UARTprintf("DEGRADED MODE -> %d\n\r",DEGRADED_MODE);
         UARTprintf("Task is alive!\n\r");
+        display_lcd_row1("Normal mode");
+        SysCtlDelay(100);
+
     }
     previous_count= current_count;
  }
@@ -69,23 +96,28 @@ void recv_from_bbg_task(void *pvParameters)
             }
             if(c == BBG_FORWARD_MOTION_SIGNAL)
             {
-               xTaskNotifyGive(xForward_Motion);
+                FORWARD();
+//               xTaskNotifyGive(xForward_Motion);
             }
             else if(c == BBG_RIGHT_MOTION_SIGNAL)
             {
-               xTaskNotifyGive(xRight_Motion);
+                RIGHT();
+//               xTaskNotifyGive(xRight_Motion);
             }
             else if(c == BBG_LEFT_MOTION_SIGNAL)
             {
-               xTaskNotifyGive(xLeft_Motion);
+                LEFT();
+//               xTaskNotifyGive(xLeft_Motion);
             }
             else if(c == BBG_BACKWARD_MOTION_SIGNAL)
             {
-               xTaskNotifyGive(xBackward_Motion);
+                BACKWARD();
+//               xTaskNotifyGive(xBackward_Motion);
             }
             else if(c == BBG_MOTOR_STOP_SIGNAL)
             {
-               xTaskNotifyGive(xStop_Motion);
+                STOP();
+//               xTaskNotifyGive(xStop_Motion);
             }
         }
     }

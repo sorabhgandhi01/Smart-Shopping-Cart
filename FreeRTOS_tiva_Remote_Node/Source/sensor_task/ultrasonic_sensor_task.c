@@ -77,6 +77,10 @@ void vUltraSonic_Task(void *pvParameters)
 
         if (dead > 1) {
             UARTprintf("Distance Sensor Inactive\n");
+            ultrasonic_sensor_data.msg_type = DISTANCE_SENSOR_INACTIVE;
+            ultrasonic_sensor_data.log_level = ERROR_T;
+
+
 
         if(xQueueSend(xQueue, (void *)&ultrasonic_sensor_data,(TickType_t)10) != pdPASS)
         {

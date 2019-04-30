@@ -48,6 +48,7 @@ typedef enum MSG_TYPE_T {
 
 }MSG_TYPE;
 
+
 typedef enum PB_DATA_T
 {
     NO_PB_UPDATE = -1,
@@ -63,14 +64,14 @@ typedef enum PB_DATA_T
 
 typedef enum GS_DATA_T
 {
-    GS_ERROR = -1,
+    GS_ERROR = 0,
     GS_FORWARD,
     GS_BACKWARD,
     GS_RIGHT,
     GS_LEFT,
+    GS_NO_GESTURE,
     GS_NEAR,
     GS_FAR,
-    GS_NO_GESTURE,
 }GS_DATA;
 
 typedef enum LOG_LEVELS_T
@@ -108,7 +109,7 @@ const static char *const MSG_TYPE_STRING[23] =
  "GESTURE SENSOR INACTIVE",
  "DISTANCE SENSOR INACTIVE",
  "RFID SENSOR INACTIVE",
- "CONNECTION WITH REMOTE NODE LOST",
+ "DEGRADED MODE",
  "PUSH BUTTON SENSOR DATA",
  "DISTANCE SENSOR DATA",
  "GESTURE SENSOR DATA",
