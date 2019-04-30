@@ -134,7 +134,7 @@ int main(void)
     xTaskCreate(vUltraSonic_Task, (const portCHAR *)"Distance",
                 configMINIMAL_STACK_SIZE, NULL, 1, &Ultrasonic_Task);
 
-//    /* Create Gesture Sensor Task */
+    /* Create Gesture Sensor Task */
 //    xTaskCreate(vGesture_Sensor_Task, (const portCHAR *)"Gesture",
 //                configMINIMAL_STACK_SIZE, NULL, 1, &Gesture_Task);
 
