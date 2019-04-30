@@ -65,7 +65,7 @@ void send_to_bbg_task(void *pvParameters)
         {
 //            display_lcd_row1("100");
 
-            UARTprintf("MESSAGE TYPE = %d\tDATA = %d\n\r", task_data.msg_type, task_data.sensor_data);
+            UARTprintf("LOG_LEVEL = %d\tMESSAGE TYPE = %d\tDATA = %d\n\r", task_data.log_level, task_data.msg_type, task_data.sensor_data);
             UART_send(&task_data, sizeof(task_data));
             vTaskDelay(500 / portTICK_PERIOD_MS);
 //            display_lcd_row1("");

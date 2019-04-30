@@ -15,7 +15,7 @@ extern SemaphoreHandle_t xMutex;
 extern QueueHandle_t xQueue;
 extern TaskHandle_t Gesture_Task;
 
-
+TIVA_MSG gs_err_report;
 
 void display();
 
@@ -24,17 +24,30 @@ void vGesture_Sensor_Task(void *pvParameters)
 {
     UARTprintf("*****************GESTURE SENSOR TASK*****************\n\r");
 
+    /* BIST - Built in Start Up Test */
     /* Initialize Gesture Sensor Task */
     if(SparkFun_APDS9960_Init()){
         UARTprintf("APDS-9960 initialization complete!\n\r");
+        gs_err_report.msg_type = SENSOR_START_UP_TEST_PASSED;
+        gs_err_report.log_level = DEBUG_T;
+
     }
     else
     {
         UARTprintf("Something went wrong during APDS-9960 init!\n\r");
-        //Kill Gesture Recognition Task
         UARTprintf("Gesture Task Killed\n\r");
         //vTaskDelete(Gesture_Task);
+        gs_err_report.msg_type = SENSOR_START_UP_TEST_FAILED;
+        gs_err_report.log_level = ERROR_T;
     }
+
+    xSemaphoreTake(xMutex, ( TickType_t )10);
+    if(xQueueSend(xQueue, (void *)&gs_err_report,(TickType_t)10) != pdPASS)
+    {
+        UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+    }
+    xSemaphoreGive(xMutex);
+
 
     /* Enable Gesture Sensor */
     if(enableGestureSensor(true))
@@ -54,13 +67,13 @@ void vGesture_Sensor_Task(void *pvParameters)
 
     for(;;)
     {
-//        if(SparkFun_APDS9960_Available() == -1)
-//        {
-//            UARTprintf("Gesture Sensor Down\n\rGesture Task Killed\n\r");
-//            //vTaskDelete(Gesture_Task);
-//        }
-//        else
-//        {
+        if(SparkFun_APDS9960_Available() == -1)
+        {
+            UARTprintf("Gesture Sensor Down\n\rGesture Task Killed\n\r");
+            vTaskDelete(Gesture_Task);
+        }
+        else
+        {
             if(isGestureAvailable())
             {
                 UARTprintf("Reading Gesture\n\r");
@@ -129,7 +142,7 @@ void vGesture_Sensor_Task(void *pvParameters)
 
         SysCtlDelay(1000000);
 
-        //}
+        }
     }
 
 }
