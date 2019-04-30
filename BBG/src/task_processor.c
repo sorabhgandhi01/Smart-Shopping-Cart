@@ -11,6 +11,8 @@
 #include "queue.h"
 #include "logger.h"
 #include "task_processor.h"
+#include "uart.h"
+#include "BBG_sender.h"
 
 
 void *task_processor_thread(void *arg)
@@ -32,7 +34,7 @@ void *task_processor_thread(void *arg)
 			send_msg.log_level = INFO;
 			
 			mq_send(logger_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
-			mq_send(sender_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0); 
+			//mq_send(sender_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0); 
 		}
 		else if (r_msg.msg_type == DISTANCE_SENSOR_INACTIVE)
 		{
@@ -40,7 +42,7 @@ void *task_processor_thread(void *arg)
 			send_msg.log_level = INFO;
 			
 			mq_send(logger_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
-			mq_send(sender_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
+			//mq_send(sender_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
 		}
 		else if (r_msg.msg_type == PUSH_BUTTON_SENSOR_DATA)
 		{
@@ -85,7 +87,8 @@ void *task_processor_thread(void *arg)
 			
 			send_msg.log_level = INFO;
 			mq_send(logger_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
-			mq_send(sender_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0); 
+			//mq_send(sender_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
+			uart_write(&(send_msg.msg_type), 1); 
 		}
 		else if (r_msg.msg_type == DISTANCE_SENSOR_DATA)
 		{
@@ -94,7 +97,8 @@ void *task_processor_thread(void *arg)
 				send_msg.msg_type = BBG_MOTOR_STOP_SIGNAL;
 				send_msg.log_level = INFO;
 				mq_send(logger_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
-				mq_send(sender_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
+				//mq_send(sender_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
+				uart_write(&(send_msg.msg_type), 1);
 			} 
 		}
 		else if (r_msg.msg_type == GESTURE_SENSOR_DATA)
@@ -128,7 +132,8 @@ void *task_processor_thread(void *arg)
 			
 			send_msg.log_level = INFO;
 			mq_send(logger_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
-			mq_send(sender_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0); 
+			//mq_send(sender_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
+			uart_write(&(send_msg.msg_type), 1); 
 		}
 		else
 		{
