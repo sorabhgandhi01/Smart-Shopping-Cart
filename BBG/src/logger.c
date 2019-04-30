@@ -38,16 +38,21 @@ void *logger_thread(void *arg)
 
 		fptr = fopen(file_name, "a");
 
-//		if (q_recv_msg.msg_type <= 11) {
+		if ((0 <= q_recv_msg.msg_type) && (q_recv_msg.msg_type <= REMOTE_NODE_OFF)) {
+			 LOG_TO_FILE(fptr, "[MSG FROM TIVA] [%s] [%s]\r\n", LOG_LEVEL_STRING[q_recv_msg.log_level], \
+                                                                                MSG_TYPE_STRING[q_recv_msg.msg_type]);
+		}
+		else if ((REMOTE_NODE_OFF < q_recv_msg.msg_type) && (q_recv_msg.msg_type <= RFID_SENSOR_DATA)) {
 			LOG_TO_FILE(fptr, "[MSG FROM TIVA] [%s] [%s] Sensor data = %d\r\n", LOG_LEVEL_STRING[q_recv_msg.log_level], \
 										MSG_TYPE_STRING[q_recv_msg.msg_type], \
 										q_recv_msg.sensor_data);
-/*		} else {
-			LOG_TO_FILE(fptr, "[BBG]\t [%s] [%s] Sensor data = %d\r\n", LOG_LEVEL_STRING[q_recv_msg.log_level], \
-										MSG_TYPE_STRING[q_recv_msg.msg_type], \
-										q_recv_msg.sensor_data);
-		}*/
+		} else {
+			LOG_TO_FILE(fptr, "[BBG]\t\t [%s] [%s]\r\n", LOG_LEVEL_STRING[q_recv_msg.log_level], \
+										MSG_TYPE_STRING[q_recv_msg.msg_type]);
+		}
 
 		fclose(fptr);
+
+		memset(&q_recv_msg, sizeof(q_recv_msg), 0);
 	}
 }

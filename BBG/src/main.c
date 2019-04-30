@@ -50,6 +50,7 @@ int main()
 
 	logger_queue_open();
 	reciever_queue_open();
+	sender_queue_open();
 	
 #if 0
 	if ((logger_queue_open() == 0) && (reciever_queue_open() == 0) && (sender_queue_open() == 0))
