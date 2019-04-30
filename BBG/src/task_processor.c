@@ -13,6 +13,7 @@
 #include "task_processor.h"
 #include "uart.h"
 #include "BBG_sender.h"
+#include "led.h"
 
 
 void *task_processor_thread(void *arg)
@@ -34,7 +35,10 @@ void *task_processor_thread(void *arg)
 			send_msg.log_level = INFO;
 			
 			mq_send(logger_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
-			//mq_send(sender_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0); 
+			//mq_send(sender_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
+			onboardLED0(1);
+			onboardLED3(1); 
+			
 		}
 		else if (r_msg.msg_type == DISTANCE_SENSOR_INACTIVE)
 		{
@@ -43,7 +47,15 @@ void *task_processor_thread(void *arg)
 			
 			mq_send(logger_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
 			//mq_send(sender_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
+			onboardLED1(1);
 		}
+
+		else if ((r_msg.msg_type == REMOTE_NODE_OFF))
+		{
+			
+			onboardLED3(1);
+		}
+
 		else if (r_msg.msg_type == PUSH_BUTTON_SENSOR_DATA)
 		{
 			switch (r_msg.sensor_data)
@@ -92,6 +104,7 @@ void *task_processor_thread(void *arg)
 		}
 		else if (r_msg.msg_type == DISTANCE_SENSOR_DATA)
 		{
+			onboardLED1(0);
 			if (r_msg.sensor_data <= 10)
 			{
 				send_msg.msg_type = BBG_MOTOR_STOP_SIGNAL;
@@ -99,7 +112,11 @@ void *task_processor_thread(void *arg)
 				mq_send(logger_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
 				//mq_send(sender_queue_t.mq, (char *) &send_msg, sizeof(send_msg), 0);
 				uart_write(&(send_msg.msg_type), 1);
-			} 
+				onboardLED2(1);
+			} else {
+
+				onboardLED2(0);
+			}
 		}
 		else if (r_msg.msg_type == GESTURE_SENSOR_DATA)
 		{

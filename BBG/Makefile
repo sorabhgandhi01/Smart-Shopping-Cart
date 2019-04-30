@@ -10,7 +10,7 @@ LIBS = -lpthread -lrt
 vpath %.c src/
 vpath %.h inc/
 
-SRC := uart.c main.c posix_timer.c logger.c BBG_sender.c BBG_reciever.c queue.c task_processor.c
+SRC := uart.c main.c posix_timer.c logger.c BBG_sender.c BBG_reciever.c queue.c task_processor.c led.c
 
 OBJ := $(SRC:.c=.o)
 

@@ -21,6 +21,7 @@
 #include "queue.h"
 #include "logger.h"
 #include "task_processor.h"
+#include "led.h"
 
 void task_queue_open();
 
@@ -51,6 +52,11 @@ int main()
 	logger_queue_open();
 	reciever_queue_open();
 	sender_queue_open();
+
+	onboardLED0(0);
+	onboardLED1(0);
+	onboardLED2(0);
+	onboardLED3(0);
 	
 #if 0
 	if ((logger_queue_open() == 0) && (reciever_queue_open() == 0) && (sender_queue_open() == 0))
