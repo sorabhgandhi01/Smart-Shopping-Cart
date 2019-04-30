@@ -6,8 +6,11 @@
 #define NUM_LOG_LEVELS 5
 #define NUM_MSG_TYPE 12
 
-typedef enum MSG_TYPE_T
-{
+#define NUM_THREAD 4
+pthread_t thread[NUM_THREAD];
+
+
+typedef enum MSG_TYPE_T {
 	HEART_BEAT = 0,
 	SENSOR_START_UP_TEST_PASSED,
 	SENSOR_START_UP_TEST_FAILED,
@@ -20,11 +23,18 @@ typedef enum MSG_TYPE_T
 	DISTANCE_SENSOR_DATA,
 	GESTURE_SENSOR_DATA,
 	RFID_SENSOR_DATA,
+	
+	/*BBG SIDE DATA*/
+	BBG_QUEUE_START_UP_TEST_PASSED,
+	BBG_QUEUE_START_UP_TEST_FAILED,
+	BBG_TC_START_UP_TEST_PASSED,
+	BBG_TC_START_UP_TEST_FAILED,
+	
 }MSG_TYPE;
 
 typedef enum PB_DATA_T
 {
-	NO_PB_UPDATE = -1,
+	NO_PB_UPDATE = 0,
 	PB1_PRESSED,
 	PB1_RELEASED,
 	PB2_PRESSED,
@@ -37,7 +47,7 @@ typedef enum PB_DATA_T
 	
 typedef enum GS_DATA_T
 {
-	GS_ERROR = -1,
+	GS_ERROR = 0,
 	GS_FORWARD,
 	GS_BACKWARD,
 	GS_RIGHT,
@@ -57,13 +67,8 @@ typedef enum LOG_LEVELS_T
 typedef struct TIVA_MSG_T
 {
 	uint8_t msg_type;
-	union TIVA_DATA
-	{
-		uint8_t gesture_data;
-		uint8_t pb_data;
-		float distance;
-		uint8_t no_data;
-	}data;
+	uint8_t log_level;
+	uint32_t sensor_data;
 }TIVA_MSG;
 
 const static char *const LOG_LEVEL_STRING[NUM_LOG_LEVELS] =
@@ -90,12 +95,5 @@ const static char *const MSG_TYPE_STRING[NUM_MSG_TYPE] =
 	"GESTURE SENSOR DATA",
 	"RFID SENSOR DATA",
 };
-
-typedef struct SENSOR_DATA_T
-{
-	uint8_t msg_type;
-	uint8_t log_level;
-	float sensor_data;
-}SENSOR_DATA;
 
 #endif

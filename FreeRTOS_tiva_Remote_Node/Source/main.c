@@ -44,6 +44,8 @@
 #include "../inc/communication_task/send_to_bbg_task.h"
 #include "../inc/communication_task/recv_from_bbg.h"
 #include "../inc/Actuator_task/motor_control_task.h"
+#include "../inc/comm_wrappers/I2C.h"
+#include "../inc/comm_wrappers/my_uart.h"
 
 /****************************************************************************
  * GLOBAL VARIABLES                                                         *
@@ -74,7 +76,9 @@ int main(void)
     PinoutSet(false, false);
 
     /* Initialize I2C */
-  //  I2C_Init();
+    I2C_Init();
+
+    display();
 
     init_RX_serial();
     init_TX_serial();
@@ -135,8 +139,8 @@ int main(void)
                 configMINIMAL_STACK_SIZE, NULL, 1, &Ultrasonic_Task);
 
     /* Create Gesture Sensor Task */
-//    xTaskCreate(vGesture_Sensor_Task, (const portCHAR *)"Gesture",
-//                configMINIMAL_STACK_SIZE, NULL, 1, &Gesture_Task);
+    xTaskCreate(vGesture_Sensor_Task, (const portCHAR *)"Gesture",
+                configMINIMAL_STACK_SIZE, NULL, 1, &Gesture_Task);
 
     /* Create InterBoard [Receive Message] Task */
     xTaskCreate(recv_from_bbg_task, (const portCHAR *)"RECEIVE TASK",

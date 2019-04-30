@@ -9,7 +9,7 @@
  * USER DEFINED HEADER FILES                                                *
  ****************************************************************************/
 #include "ultrasonic_sensor_task.h"
-
+#include "Lcd_display.h"
 
 /****************************************************************************
  * EXPORTED GLOBAL VARIABLES                                                *
@@ -37,10 +37,10 @@ uint32_t time;
  ****************************************************************************/
 void vUltraSonic_Task(void *pvParameters)
 {
+
     UARTprintf("UltraSonic Sensor Task\n\r");
     int dead = 0;
     ultrasonic_sensor_init();
-//    TaskData_t ultrasonic_data;
     TIVA_MSG ultrasonic_sensor_data;
 
     while(1)
