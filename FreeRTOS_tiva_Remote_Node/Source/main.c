@@ -47,6 +47,8 @@
 #include "../inc/comm_wrappers/I2C.h"
 #include "../inc/comm_wrappers/my_uart.h"
 
+#include "Lcd_display.h"
+
 /****************************************************************************
  * GLOBAL VARIABLES                                                         *
  ****************************************************************************/
