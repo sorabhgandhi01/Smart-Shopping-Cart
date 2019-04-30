@@ -15,6 +15,7 @@
 #include "timers.h"
 #include "task.h"
 #include "motor_control.h"
+#include "Lcd_display.h"
 
 void vRecv_from_bbg_TimerCallback( TimerHandle_t xTimer );
 
@@ -26,8 +27,12 @@ extern TaskHandle_t xStop_Motion;
 extern TaskHandle_t xRight_Motion;
 extern TaskHandle_t xForward_Motion;
 extern TaskHandle_t xBackward_Motion;
+extern SemaphoreHandle_t xMutex;
+extern QueueHandle_t xQueue;
+
 
 bool DEGRADED_MODE;
+TIVA_MSG degraded_mode;
 
 void vRecv_from_bbg_TimerCallback( TimerHandle_t xTimer )
  {
@@ -36,6 +41,18 @@ void vRecv_from_bbg_TimerCallback( TimerHandle_t xTimer )
         DEGRADED_MODE = true;
         UARTprintf("DEGRADED MODE -> %d\n\r",DEGRADED_MODE);
         UARTprintf("Error!!\n\r");
+        display_lcd_row1("Degraded mode");
+        SysCtlDelay(100);
+
+
+        degraded_mode.msg_type = REMOTE_NODE_OFF;
+        degraded_mode.log_level = ERROR_T;
+        xSemaphoreTake(xMutex, ( TickType_t )10);
+        if(xQueueSend(xQueue, (void *)&degraded_mode,(TickType_t)10) != pdPASS)
+        {
+            UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+        }
+        xSemaphoreGive(xMutex);
 
     }
     else
@@ -43,6 +60,9 @@ void vRecv_from_bbg_TimerCallback( TimerHandle_t xTimer )
         DEGRADED_MODE = false;
         UARTprintf("DEGRADED MODE -> %d\n\r",DEGRADED_MODE);
         UARTprintf("Task is alive!\n\r");
+        display_lcd_row1("Normal mode");
+        SysCtlDelay(100);
+
     }
     previous_count= current_count;
  }

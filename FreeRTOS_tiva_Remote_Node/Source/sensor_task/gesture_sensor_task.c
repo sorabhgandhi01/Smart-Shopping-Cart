@@ -70,6 +70,15 @@ void vGesture_Sensor_Task(void *pvParameters)
         if(SparkFun_APDS9960_Available() == -1)
         {
             UARTprintf("Gesture Sensor Down\n\rGesture Task Killed\n\r");
+            gs_err_report.msg_type = GESTURE_SENSOR_INACTIVE;
+            gs_err_report.log_level = ERROR_T;
+            xSemaphoreTake(xMutex, ( TickType_t )10);
+            if(xQueueSend(xQueue, (void *)&gs_err_report,(TickType_t)10) != pdPASS)
+            {
+                UARTprintf("Failed to post the message, even after 10 ticks\n\r");
+            }
+            xSemaphoreGive(xMutex);
+
             vTaskDelete(Gesture_Task);
         }
         else
@@ -77,7 +86,7 @@ void vGesture_Sensor_Task(void *pvParameters)
             if(isGestureAvailable())
             {
                 UARTprintf("Reading Gesture\n\r");
-                string_to_lcd("Reading Gesture");
+
                 switch(readGesture())
                 {
                 case DIR_UP:
