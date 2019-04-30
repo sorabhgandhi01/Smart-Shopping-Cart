@@ -47,7 +47,7 @@ int uart_rx_open(const char *device_name, unsigned int baudrate) {
 	}
 	
 	tcgetattr(rx.fd, &termios);
-	termios.c_cc[VMIN] = 1;
+	termios.c_cc[VMIN] = 0;
 	termios.c_cc[VTIME] = 5;
 	termios.c_cflag = baud | CS8 | CLOCAL | CREAD;
 	termios.c_iflag = 0;

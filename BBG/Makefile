@@ -2,7 +2,8 @@
 
 CC = arm-linux-gnueabihf-gcc
 
-CFLAGS = -Iinc/
+CFLAGS = -Iinc/ \
+	 -g
 
 LIBS = -lpthread -lrt
 

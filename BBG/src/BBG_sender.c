@@ -15,13 +15,14 @@
 #include "comm_interface.h"
 #include "posix_timer.h"
 #include "BBG_sender.h"
-
+#include "queue.h"
 
 void *uart_tx_thread(void *arg)
 {
 	int fd;
 	int status = 1;
 	char w_data = 0x7E;
+	TIVA_MSG r_msg;
 
 	fd = uart_tx_open("/dev/ttyO4", 115200);
         if (fd != 0) {
@@ -45,6 +46,16 @@ void *uart_tx_thread(void *arg)
 
 			status = uart_write(&w_data, 1);
 			FLAG_HB_SEND = 0;
+		}
+		
+		if ((mq_receive(sender_queue_t.mq, (char *)&r_msg, sizeof(r_msg), 0)) == -1) {
+			printf("Message Recieve error");
+		}
+
+		if (r_msg.msg_type > RFID_SENSOR_DATA)
+		{
+			printf("SM = %d\r\n", r_msg.msg_type);
+			uart_write(&(r_msg.msg_type), sizeof(r_msg.msg_type));
 		}
 	}
 

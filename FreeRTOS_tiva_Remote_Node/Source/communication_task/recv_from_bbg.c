@@ -60,7 +60,9 @@ void recv_from_bbg_task(void *pvParameters)
     for (;;) {
         while (UARTCharsAvail(UART1_BASE)) {
             char c = ROM_UARTCharGet(UART1_BASE);
-            UARTprintf("Rec %x\r\n", c);
+
+            UARTprintf("Rec %d\r\n", c);
+
             if(c == 0x7e)
             {
                 current_count++;
